@@ -1,46 +1,36 @@
-# Astro Starter Kit: Basics
+# 🏆 Premios LAGAWARDS
 
-```sh
-npm create astro@latest -- --template basics
-```
+Este es el repositorio del sitio web para los **Premios LAGAWARDS**. El proyecto está construido con [Astro](https://astro.build/) y estilizado con [Tailwind CSS](https://tailwindcss.com/).
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## 🚀 Estructura del Proyecto
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
+La estructura del proyecto es la siguiente:
 
 ```text
 /
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+├── public/               # Archivos estáticos (imágenes, fuentes, etc.)
+├── src/
+│   ├── assets/           # Assets procesados por Astro
+│   ├── components/       # Componentes de Astro (.astro)
+│   ├── layouts/          # Plantillas de página
+│   └── pages/            # Páginas y rutas del sitio
+├── astro.config.mjs      # Configuración de Astro
+├── tailwind.config.cjs   # Configuración de Tailwind CSS
+├── postcss.config.cjs    # Configuración de PostCSS
+└── package.json          # Dependencias y scripts del proyecto
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## 🧞 Comandos
 
-## 🧞 Commands
+Todos los comandos se ejecutan desde la raíz del proyecto en una terminal:
 
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
+| Comando                   | Acción                                           |
 | :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+| `npm install`             | Instala las dependencias del proyecto.           |
+| `npm run dev`             | Inicia el servidor de desarrollo en `localhost:4321`. |
+| `npm run build`           | Compila el sitio para producción en `./dist/`.   |
+| `npm run preview`         | Previsualiza el sitio compilado localmente.      |
 
-## 👀 Want to learn more?
+## 👀 ¿Quieres saber más?
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Puedes consultar la [documentación de Astro](https://docs.astro.build) o unirte a su [servidor de Discord](https://astro.build/chat).

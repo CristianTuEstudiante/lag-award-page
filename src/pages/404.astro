@@ -1,0 +1,27 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="404: No encontrado">
+  <main class="flex flex-col items-center justify-center min-h-screen text-white text-center px-4">
+    <h1 class="text-3xl font-bold font-orbitron">404</h1>
+    
+    <p class="text-2xl mt-4 mb-8">Página no encontrada</p>
+
+    <div class="my-8">
+      <img src="/src/assets/404.png" alt="Lagarto malo" class="max-w-xs mx-auto rounded-lg shadow-lg">
+    </div>
+
+    <p class="text-1xl p-4 mt-2 mb-2">Esto no existe capo :)</p>
+    
+    
+
+    <br />
+    <a 
+      href="/" 
+      class="inline-block px-8 py-4 bg-linear-to-r from-red-600 to-black-500 hover:from-orange-700 hover:to-purple-800 text-white font-bold rounded-2xl shadow-lg transform hover:scale-105 transition-all duration-300 ease-in-out"
+    >
+      Volver al Inicio
+    </a>
+  </main>
+</Layout>
