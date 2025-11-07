@@ -1,0 +1,225 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+
+const categories = [
+  {
+    id: 'clip-del-ano',
+    icon: 'award',
+    title: 'Clip del Año',
+    description: 'El momento más icónico, divertido o impresionante capturado en un clip.',
+    nominees: [
+      { name: 'El susto épico de Rubius', creator: 'Rubius', image: '/img/nominees/rubius.png' },
+      { name: 'La jugada imposible de Ibai', creator: 'Ibai Llanos', image: '/img/nominees/ibai.png' },
+      { name: 'El fail de Auronplay', creator: 'Auronplay', image: '/img/nominees/auron.png' },
+      { name: 'El momento más emotivo', creator: 'TheGrefg', image: '/img/nominees/grefg.png' },
+    ]
+  },
+  {
+    id: 'creador-del-ano',
+    icon: 'user',
+    title: 'Creador del Año',
+    description: 'El creador de contenido que ha tenido el mayor impacto y crecimiento.',
+    nominees: [
+      { name: 'KZ', creator: 'KZ', image: '/img/nominees/kz.png' },
+      { name: 'LAG', creator: 'LAG', image: '/img/nominees/lag.png' },
+      { name: 'IlloJuan', creator: 'IlloJuan', image: '/img/nominees/illojuan.png' },
+      { name: 'Spreen', creator: 'Spreen', image: '/img/nominees/spreen.png' },
+    ]
+  },
+  // ... (Agrega más categorías según sea necesario)
+];
+---
+
+<Layout title="Categorías - LAGAWARDS">
+  <Navbar />
+  <main class="pt-24 text-white">
+    <div class="container mx-auto px-6 py-16">
+      
+      <!-- Vista de Cuadrícula de Categorías (Visible por defecto) -->
+      <div id="category-view" class="transition-opacity duration-300">
+        <div class="text-center mb-16">
+          <h1 class="text-5xl md:text-7xl font-bold font-orbitron">
+            <span class="bg-linear-to-r from-purple-500 to-blue-500 text-transparent bg-clip-text">Categorías</span> de Premios
+          </h1>
+          <p class="text-xl text-gray-300 mt-4 max-w-3xl mx-auto">
+            Selecciona una categoría para ver los nominados y votar.
+          </p>
+        </div>
+        <div id="category-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {categories.map(category => (
+            <div class="card-glass p-8 text-center flex flex-col items-center cursor-pointer transition-all duration-300 hover:border-purple-500 hover:scale-105" data-category-id={category.id}>
+              <!-- Icono -->
+              <h3 class="text-2xl font-bold font-orbitron mb-2">{category.title}</h3>
+              <p class="text-gray-400 text-sm">{category.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Vista de Detalles de Nominados (Oculta por defecto) -->
+      <div id="nominee-view" class="hidden relative">
+    <button id="back-to-categories" class="cursor-pointer flex items-center gap-2 text-purple-400 font-bold mb-8 hover:text-purple-300 transition-colors">
+        &larr; Volver a Categorías
+    </button>
+    
+    <!-- Contenedor para el contenido que se anima -->
+    <div id="nominee-content" class="transition-opacity duration-300">
+        <h1 id="nominee-title" class="text-5xl md:text-7xl font-bold font-orbitron mb-12 text-center"></h1>
+        <div id="nominee-list" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <!-- Las miniaturas de los nominados se insertarán aquí -->
+        </div>
+    </div>
+
+    <!-- Flechas de Navegación -->
+    <button id="prev-category" class="cursor-pointer nav-arrow left-0 -translate-x-1/2">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+</button>
+<button id="next-category" class="cursor-pointer nav-arrow right-0 translate-x-1/2">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+</button>
+</div>
+
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+.card-glass {
+    background-color: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow:
+        0 10px 15px -3px rgba(0, 0, 0, 0.1),
+        0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .nav-arrow {
+      position: absolute;
+      top: 50%;
+      z-index: 20;
+      width: 3rem; /* w-12 */
+      height: 3rem; /* h-12 */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba(88, 28, 135, 0.3); /* bg-purple-900/30 */
+      color: #ffffff; /* text-white */
+      border-radius: 9999px; /* rounded-full */
+      border: 1px solid rgba(168, 85, 247, 0.5); /* border + border-purple-500/50 */
+      transition: all 300ms ease-in-out; /* transition-all duration-300 ease-in-out */
+      box-shadow: 0 10px 15px -3px rgba(88, 28, 135, 0.5), 0 4px 6px -4px rgba(88, 28, 135, 0.5); /* shadow-lg shadow-purple-900/50 */
+    }
+
+    /* Posicionamiento y traducción horizontal/vertical */
+    #prev-category {
+      left: 0;
+      transform: translate(-50%, -50%);
+    }
+
+    #next-category {
+      right: 0;
+      transform: translate(50%, -50%);
+    }
+
+    .nav-arrow:hover {
+      background-color: rgba(126, 34, 206, 0.5); /* bg-purple-700/50 */
+    }
+
+    /* Mantener la traducción y agregar escala en hover sin romper la posición */
+    #prev-category:hover {
+      transform: translate(-50%, -50%) scale(1.1); /* scale-110 */
+      box-shadow: 0 0 15px rgba(168, 85, 247, 0.6); /* Resplandor morado */
+    }
+
+    #next-category:hover {
+      transform: translate(50%, -50%) scale(1.1); /* scale-110 */
+      box-shadow: 0 0 15px rgba(168, 85, 247, 0.6); /* Resplandor morado */
+    }
+</style>
+
+<script define:vars={{ categories }}>
+  document.addEventListener('DOMContentLoaded', () => {
+    const categoryView = document.getElementById('category-view');
+    const nomineeView = document.getElementById('nominee-view');
+    const categoryGrid = document.getElementById('category-grid');
+    const backButton = document.getElementById('back-to-categories');
+    
+    const nomineeContent = document.getElementById('nominee-content');
+    const nomineeTitle = document.getElementById('nominee-title');
+    const nomineeList = document.getElementById('nominee-list');
+
+    const prevBtn = document.getElementById('prev-category');
+    const nextBtn = document.getElementById('next-category');
+
+    let currentCategoryIndex = 0;
+
+    // Función para mostrar una categoría específica
+    const showCategoryDetails = (index) => {
+      currentCategoryIndex = index;
+      const category = categories[index];
+
+      // Animar la salida del contenido actual
+      nomineeContent.classList.add('opacity-0');
+
+      setTimeout(() => {
+        // Actualizar contenido
+        nomineeTitle.textContent = category.title;
+        nomineeList.innerHTML = ''; 
+
+        category.nominees.forEach(nominee => {
+          const nomineeEl = document.createElement('div');
+          nomineeEl.className = 'card-glass p-4 flex flex-col items-center text-center transition-transform transform hover:scale-105';
+          nomineeEl.innerHTML = `
+            <img src="${nominee.image}" alt="Imagen de ${nominee.name}" class="w-24 h-24 rounded-full mb-4 object-cover border-2 border-purple-500">
+            <h4 class="font-bold text-lg flex-grow">${nominee.name}</h4>
+            <p class="text-sm text-gray-400 mb-4">${nominee.creator}</p>
+            <button class="w-full px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg text-sm font-bold transition-colors">Votar</button>
+          `;
+          nomineeList.appendChild(nomineeEl);
+        });
+
+        // Animar la entrada del nuevo contenido
+        nomineeContent.classList.remove('opacity-0');
+      }, 300); // Duración de la animación de salida
+    };
+
+    // Event listener para la cuadrícula de categorías
+    categoryGrid.addEventListener('click', (e) => {
+      const card = e.target.closest('[data-category-id]');
+      if (!card) return;
+
+      const categoryId = card.dataset.categoryId;
+      const categoryIndex = categories.findIndex(c => c.id === categoryId);
+
+      if (categoryIndex !== -1) {
+        showCategoryDetails(categoryIndex);
+
+        // Cambiar de vista
+        categoryView.classList.add('opacity-0', 'hidden');
+        nomineeView.classList.remove('hidden');
+      }
+    });
+
+    // Event listeners para las flechas
+    prevBtn.addEventListener('click', () => {
+      const newIndex = (currentCategoryIndex - 1 + categories.length) % categories.length;
+      showCategoryDetails(newIndex);
+    });
+
+    nextBtn.addEventListener('click', () => {
+      const newIndex = (currentCategoryIndex + 1) % categories.length;
+      showCategoryDetails(newIndex);
+    });
+
+    // Event listener para volver atrás
+    backButton.addEventListener('click', () => {
+      nomineeView.classList.add('hidden');
+      categoryView.classList.remove('hidden', 'opacity-0');
+    });
+  });
+</script>

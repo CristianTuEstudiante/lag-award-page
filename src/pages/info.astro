@@ -1,0 +1,117 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro'; // Importamos el footer
+---
+
+<Layout title="Información - LAGAWARDS">
+  <Navbar />
+  <main class="pt-24 text-white overflow-hidden">
+    <div class="container mx-auto px-6 py-16">
+      
+      <!-- Encabezado -->
+      <div class="text-center mb-16">
+        <span class="inline-block bg-yellow-400/10 text-yellow-400 text-sm font-bold px-4 py-1 rounded-full mb-4">Guía del Evento</span>
+        <h1 class="text-5xl md:text-7xl font-bold font-orbitron">
+          Información <span class="bg-linear-to-r from-red-500 to-orange-500 text-transparent bg-clip-text">General</span>
+        </h1>
+        <p class="text-xl text-gray-300 mt-4 max-w-3xl mx-auto">
+          Todo lo que necesitas saber sobre los LAG Awards: fechas, reglas y cómo participar.
+        </p>
+      </div>
+
+      <!-- Grid Principal -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-20">
+        
+        <!-- Columna Izquierda (más ancha) -->
+        <div class="lg:col-span-2 space-y-8">
+          <div class="bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 shadow-lg p-8">
+            <h2 class="text-2xl font-bold font-orbitron mb-4">Sobre los LAG Awards</h2>
+            <p class="text-gray-400 mb-6">Los LAG Awards celebran a creadores y momentos destacados de nuestra comunidad. Este año contamos con nuevas categorías y un sistema de votación mejorado.</p>
+            <div class="grid grid-cols-2 gap-4 mb-6 text-center">
+              <div class="bg-white/5 border border-white/10 rounded-lg py-3 px-2 text-sm font-semibold">24 categorías</div>
+              <div class="bg-white/5 border border-white/10 rounded-lg py-3 px-2 text-sm font-semibold">1000+ creadores</div>
+              <div class="bg-white/5 border border-white/10 rounded-lg py-3 px-2 text-sm font-semibold">Global y online</div>
+              <div class="bg-white/5 border border-white/10 rounded-lg py-3 px-2 text-sm font-semibold">Final en vivo</div>
+            </div>
+            <div class="grid grid-cols-2 gap-4 text-center">
+              <div>
+                <div class="text-4xl font-bold text-yellow-400">85K</div>
+                <div class="text-sm text-gray-400">Votos emitidos</div>
+              </div>
+              <div>
+                <div class="text-4xl font-bold text-orange-400">320</div>
+                <div class="text-sm text-gray-400">Nominaciones</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Columna Derecha -->
+        <div class="space-y-8">
+          <div class="bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 shadow-lg p-6">
+            <h3 class="text-xl font-bold font-orbitron mb-4">Fechas Clave</h3>
+            <ul class="space-y-3 text-gray-300">
+              <li class="flex justify-between"><span>Apertura de nominaciones</span> <span class="font-mono text-red-400">1 Feb</span></li>
+              <li class="flex justify-between"><span>Cierre de nominaciones</span> <span class="font-mono text-red-400">20 Feb</span></li>
+              <li class="flex justify-between"><span>Votación del público</span> <span class="font-mono text-purple-400">25 Feb - 10 Mar</span></li>
+              <li class="flex justify-between"><span>Gala y anuncio</span> <span class="font-mono text-yellow-400">15 Mar</span></li>
+            </ul>
+          </div>
+          <div class="bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 shadow-lg p-6">
+            <h3 class="text-xl font-bold font-orbitron mb-4">¿Quién puede nominar?</h3>
+            <p class="text-gray-400 text-sm">Cualquier miembro verificado de la comunidad LAG.</p>
+          </div>
+           <div class="bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 shadow-lg p-6">
+            <h3 class="text-xl font-bold font-orbitron mb-4">¿Cómo se cuentan los votos?</h3>
+            <p class="text-gray-400 text-sm">Un voto por categoría por usuario. Auditoría automática.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="max-w-4xl mx-auto space-y-12 pb-10">
+        <section>
+          <h2 class="text-3xl font-bold font-orbitron mb-4 border-l-4 border-red-500 pl-4">¿Qué son los LAGAWARDS?</h2>
+          <p class="text-gray-400 leading-relaxed">
+            Los LAGAWARDS son un evento anual dedicado a celebrar y premiar la creatividad, el talento y los momentos más memorables de la comunidad de creadores de contenido. Desde clips virales hasta las personalidades más influyentes, nuestro objetivo es reconocer a quienes hacen de internet un lugar más entretenido y vibrante.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="text-3xl font-bold font-orbitron mb-4 border-l-4 border-purple-500 pl-4">Nuestra Misión</h2>
+          <p class="text-gray-400 leading-relaxed">
+            Nuestra misión es simple: dar visibilidad y reconocimiento a los creadores de todos los tamaños. Creemos en el poder de la comunidad para descubrir y apoyar el talento emergente, y los LAGAWARDS son la plataforma para que esa voz se escuche.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="text-3xl font-bold font-orbitron mb-4 border-l-4 border-yellow-400 pl-4">Proceso de Votación</h2>
+          <p class="text-gray-400 leading-relaxed">
+            El proceso es totalmente impulsado por la comunidad. Los nominados son seleccionados en base a la popularidad y el impacto de su contenido durante el año. Posteriormente, se abre un período de votación donde el público puede apoyar a sus favoritos en cada categoría. ¡Tu voto decide quién se lleva el premio!
+          </p>
+        </section>
+      </div>
+
+      <br/>
+
+      <!-- Guía Rápida para Participar -->
+      <div class="max-w-4xl mx-auto text-center">
+        <h2 class="text-4xl font-bold font-orbitron mb-8">Guía Rápida para Participar</h2>
+        <div class="space-y-6">
+          <div class="bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 shadow-lg p-4 text-lg"><strong>1. Propón una nominación:</strong> Comparte el enlace del clip o perfil del creador.</div>
+          <div class="bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 shadow-lg p-4 text-lg"><strong>2. Verificación:</strong> Nuestro equipo revisa elegibilidad y categoría.</div>
+          <div class="bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 shadow-lg p-4 text-lg"><strong>3. Vota:</strong> Apoya a tus favoritos durante el período de votación.</div>
+          <div class="bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 shadow-lg p-4 text-lg"><strong>4. Celebra:</strong> Únete a la gala final y comparte los resultados.</div>
+        </div>
+        <div class="mt-10 flex justify-center gap-4">
+          <a href="/nominar" class="px-8 py-3 bg-linear-to-r from-red-600 to-orange-500 text-white font-bold rounded-full transition-transform transform hover:scale-105">Ir a Nominados</a>
+          <a href="/reglas" class="px-8 py-3 bg-transparent border-2 border-purple-500 text-white font-bold rounded-full transition-all hover:bg-purple-500/10">Reglas completas</a>
+        </div>
+      </div>
+
+    </div>
+    
+  </main>
+  <Footer />
+</Layout>
+
