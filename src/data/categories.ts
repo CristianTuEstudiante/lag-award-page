@@ -7,6 +7,7 @@ const categories = [
     image: "/img/ph-1.jpg",
     color: "from-red-600 to-red-700",
     votes: "12.5K",
+    tvBackground: "/img/colbars.gif", // <-- mirá vó cris, si quieres personalizar el fondo de cada categoría solo cambia este coso jdsjsd
     nominees: [
       {
         name: "excitado",
@@ -38,6 +39,7 @@ const categories = [
     image: "/img/ph-1.jpg",
     color: "from-purple-600 to-purple-700",
     votes: "8.3K",
+    tvBackground: "/img/colbars.gif",
     nominees: [
       {
         name: "Grox",
@@ -73,6 +75,7 @@ const categories = [
     image: "/img/ph-1.jpg",
     color: "from-orange-600 to-orange-700",
     votes: "7.1K",
+    tvBackground: "/img/colbars.gif",
     nominees: [
       {
         name: "6Tarex",
@@ -104,6 +107,7 @@ const categories = [
     image: "/img/ph-1.jpg",
     color: "from-yellow-600 to-yellow-700",
     votes: "9.4K",
+    tvBackground: "/img/colbars.gif",
     nominees: [
       {
         name: "El TLAG Español",
@@ -147,28 +151,33 @@ const categories = [
     image: "/img/ph-1.jpg",
     color: "from-green-600 to-green-700",
     votes: "11.2K",
+    tvBackground: "/img/colbars.gif",
     nominees: [
       {
         name: "No im not a human",
         creator: "TheNikito",
+        image: "/img/lag_uconstr_placeholder.png",
         video: "/video/nominees/Lets Play 3 The Nikito.webm",
         description: "Cuando el lag te sorprende en el peor momento.",
       },
       {
         name: "LOTR: BFME II: The Rise of the Witch-king",
         creator: "TheKratos86",
+        image: "/img/lag_uconstr_placeholder.png",
         video: "/video/nominees/Lets Play 2 Thekratos.webm",
         description: "La cara que pones cuando ves un bug épico.",
       },
       {
         name: "Mafia Mobile2",
         creator: "Alejo Gameplayer",
+        image: "/img/lag_uconstr_placeholder.png",
         video: "/video/nominees/Lets Play 4 Alejogameplayer.webm",
         description: "Ese momento incómodo en el stream.",
       },
       {
         name: "Left 4 Dead 2 Lima Infection",
         creator: "Johan00",
+        image: "/img/lag_uconstr_placeholder.png",
         video: "/video/nominees/Lets Play 1 Johan.webm",
         description: "Cuando tu emote favorito se vuelve viral.",
       },

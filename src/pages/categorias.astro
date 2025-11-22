@@ -25,20 +25,38 @@ import categories from "../data/categories.ts";
         </div>
         <div
           id="category-grid"
-          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          class="flex flex-wrap gap-8 justify-center"
         >
           {
+
             categories.map((category) => (
-              <div
-                class="card-glass p-8 text-center flex flex-col items-center cursor-pointer transition-all duration-300 hover:border-purple-500 hover:scale-105"
-                data-category-id={category.id}
-              >
-                <h3 class="text-2xl font-bold font-orbitron mb-2">
-                  {category.title}
-                </h3>
-                <p class="text-gray-400 text-sm">{category.description}</p>
+                  <div
+                    class="relative h-40 md:h-48 lg:h-56 w-full md:w-1/2 lg:w-1/3 max-w-xl cursor-pointer group"
+                    data-category-id={category.id}
+                  >
+                {/* Fondo con imagen de categoría / tvBackground */}
+                <div class="absolute inset-0 rounded-2xl overflow-hidden category-card-bg">
+                  <img
+                    src={category.tvBackground || category.image}
+                    alt={category.title}
+                    class="w-full h-full object-cover transform scale-105 opacity-70 group-hover:scale-110 group-hover:opacity-90 transition-transform duration-500 ease-out"
+                  />
+                </div>
+
+                {/* Glass oscuro opaco encima, cubriendo toda la tarjeta */}
+                <div class="absolute inset-0 category-card-glass transition-all duration-300 hover:border-purple-500 hover:scale-105">
+                  <div class="h-full w-full p-8 text-center flex flex-col items-center justify-center">
+                    <h3 class="text-2xl font-bold font-orbitron mb-2">
+                      {category.title}
+                    </h3>
+                    <p class="text-gray-300 text-sm">
+                      {category.description}
+                    </p>
+                  </div>
+                </div>
               </div>
             ))
+
           }
         </div>
       </div>
@@ -47,54 +65,75 @@ import categories from "../data/categories.ts";
         id="nominee-view"
         class="hidden relative transition-opacity duration-300 opacity-0"
       >
-        <button
-          id="back-to-categories"
-          class="cursor-pointer flex items-center gap-2 text-purple-400 font-bold mb-8 hover:text-purple-300 transition-colors z-30 relative"
-        >
-          &larr; Volver a Categorías
-        </button>
+        <!-- Contenedor tipo "televisión" para todo el bloque de nominados -->
+        <div class="relative mt-4 tv-frame">
+          <!-- Capa de fondo de la "pantalla" (aquí luego se puede poner una imagen o GIF) -->
+          <div class="absolute inset-0 rounded-[2.3rem] overflow-hidden pointer-events-none tv-screen-bg"></div>
 
-        <div id="nominee-content" class="transition-opacity duration-300">
-          <h1
-            id="nominee-title"
-            class="text-5xl md:text-7xl font-bold font-orbitron mb-12 text-center"
+          <!-- Contenido animado dentro de la TV -->
+          <div
+            id="nominee-content"
+            class="relative z-10 transition-opacity duration-300 nominee-anim-container"
           >
-          </h1>
-
-          <div class="relative w-full">
-            <button id="prev-category" class="cursor-pointer nav-arrow left-0">
-              <svg
-                class="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                ><path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M15 19l-7-7 7-7"></path></svg
+            <!-- Encabezado con glass oscuro: volver a categorías + título + flechas -->
+            <div
+              class="mb-10 px-4 sm:px-8 py-5 md:py-6 tv-header-glass flex flex-col gap-4 md:gap-6"
+            >
+              <button
+                id="back-to-categories"
+                class="cursor-pointer flex items-center gap-2 text-purple-400 font-bold hover:text-purple-300 transition-colors z-30 relative"
               >
-            </button>
+                &larr; Volver a Categorías
+              </button>
+
+              <div class="text-center">
+                <h1
+                  id="nominee-title"
+                  class="text-3xl md:text-5xl lg:text-6xl font-bold font-orbitron text-center mb-4 px-4"
+                >
+                </h1>
+
+                <div class="flex items-center justify-center gap-4">
+                  <button id="prev-category" class="cursor-pointer nav-arrow">
+                    <svg
+                      class="w-6 h-6"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M15 19l-7-7 7-7"
+                      ></path>
+                    </svg>
+                  </button>
+
+                  <button id="next-category" class="cursor-pointer nav-arrow">
+                    <svg
+                      class="w-6 h-6"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 5l7 7-7 7"
+                      ></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
 
             <div
               id="nominee-list"
-              class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+              class="flex flex-wrap gap-6 justify-center"
             >
-            </div>
-
-            <button id="next-category" class="cursor-pointer nav-arrow right-0">
-              <svg
-                class="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                ><path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M9 5l7 7-7 7"></path></svg
-              >
-            </button>
+            </div>          
           </div>
         </div>
       </div>
@@ -103,210 +142,284 @@ import categories from "../data/categories.ts";
         id="detail-view"
         class="hidden relative transition-opacity duration-300 opacity-0"
       >
-        <button
-          id="back-to-nominees"
-          class="cursor-pointer flex items-center gap-2 text-purple-400 font-bold mb-8 hover:text-purple-300 transition-colors"
-        >
-          &larr; Volver a Nominados
-        </button>
-
-        <div class="card-glass p-4 md:p-8 animate-fade-in">
+        <div class="relative mt-4 tv-frame">
+          <!-- Fondo tipo TV para la vista de detalles -->
           <div
-            class="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center lg:items-start"
-          >
-            <div class="w-full lg:w-1/2">
-              <div
-                id="media-container"
-                class="relative aspect-square rounded-xl overflow-hidden border-4 border-purple-500/30 shadow-[0_0_30px_rgba(168,85,247,0.3)] group bg-black transition-all duration-300"
-              >
-                <img
-                  id="detail-img"
-                  src=""
-                  alt="Imagen del nominado"
-                  class="w-full h-full object-cover absolute inset-0 transition-opacity duration-300"
-                />
+            class="absolute inset-0 rounded-[2.3rem] overflow-hidden pointer-events-none tv-screen-bg"
+          ></div>
 
-                <div
-                  id="audio-overlay"
-                  class="absolute inset-0 flex items-center justify-center cursor-pointer transition-colors hover:bg-black/50"
-                >
-                  <button
-                    id="play-btn"
-                    class="cursor-pointer bg-white/90 hover:bg-white text-purple-600 rounded-full p-6 w-24 h-24 flex items-center justify-center shadow-[0_0_20px_rgba(255,255,255,0.5)] transition-transform hover:scale-110 active:scale-95"
+          <!-- Contenido por encima del fondo -->
+          <div class="relative z-10">
+
+            <div class="mb-10 px-4 sm:px-8 py-5 md:py-6 tv-header-glass flex flex-col gap-4 md:gap-6">
+            <button
+              id="back-to-nominees"
+              class="cursor-pointer flex items-center gap-2 text-purple-400 font-bold mb-8 hover:text-purple-300 transition-colors"
+            >
+              &larr; Volver a Nominados
+            </button>
+              <div
+                class="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center lg:items-start"
+              >
+                <div class="w-full lg:w-1/2">
+                  <div
+                    id="media-container"
+                    class="relative aspect-square rounded-xl overflow-hidden border-4 border-purple-500/30 shadow-[0_0_30px_rgba(168,85,247,0.3)] group bg-black transition-all duration-300"
                   >
-                    <svg
-                      id="icon-play"
-                      class="w-12 h-12 ml-1"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg
+                    <img
+                      id="detail-img"
+                      src=""
+                      alt="Imagen del nominado"
+                      class="w-full h-full object-cover absolute inset-0 transition-opacity duration-300"
+                    />
+
+                    <div
+                      id="artwork-zoom-hint"
+                      class="hidden pointer-events-none absolute bottom-3 right-3 px-3 py-1 rounded-full bg-black/70 text-[0.7rem] md:text-xs font-semibold text-purple-200 opacity-0 translate-y-1 transition-all duration-200"
                     >
-                    <svg
-                      id="icon-pause"
-                      class="w-12 h-12 hidden"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                      ><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg
+                      Click para ampliar
+                    </div>
+
+                    <div
+                      id="audio-overlay"
+                      class="absolute inset-0 flex items-center justify-center cursor-pointer transition-colors hover:bg-black/50"
                     >
-                  </button>
+                      <button
+                        id="play-btn"
+                        class="cursor-pointer bg-white/90 hover:bg-white text-purple-600 rounded-full p-6 w-24 h-24 flex items-center justify-center shadow-[0_0_20px_rgba(255,255,255,0.5)] transition-transform hover:scale-110 active:scale-95"
+                      >
+                        <svg
+                          id="icon-play"
+                          class="w-12 h-12 ml-1"
+                          fill="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M8 5v14l11-7z"></path>
+                        </svg>
+                        <svg
+                          id="icon-pause"
+                          class="w-12 h-12 hidden"
+                          fill="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"
+                          ></path>
+                        </svg>
+                      </button>
+                    </div>
+
+                    <video
+                      id="detail-video"
+                      class="hidden w-full h-full object-contain bg-black"
+                      controls={false}
+                    ></video>
+
+                    <div
+                      id="video-controls"
+                      class="hidden absolute bottom-0 left-0 right-0 p-3 bg-linear-to-t from-black/80 to-transparent transition-opacity duration-300 opacity-0 group-hover:opacity-100"
+                    >
+                      <div
+                        class="flex justify-between text-sm text-gray-400 mt-2"
+                      >
+                        <span id="current-time">0:00</span>
+                        <span id="total-duration">0:00</span>
+                      </div>
+                      <input
+                        type="range"
+                        id="video-progress"
+                        min="0"
+                        max="100"
+                        value="0"
+                        class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-purple-500"
+                      />
+
+                      <div class="flex items-center gap-4 mt-2">
+                        <button
+                          id="video-play-pause-btn"
+                          class="cursor-pointer text-white hover:text-red-400 transition-colors"
+                        >
+                          <svg
+                            id="video-icon-play"
+                            class="w-8 h-8"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M8 5v14l11-7z"></path>
+                          </svg>
+                          <svg
+                            id="video-icon-pause"
+                            class="w-8 h-8 hidden"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"
+                            ></path>
+                          </svg>
+                        </button>
+
+                        <svg
+                          class="w-6 h-6 text-gray-300"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"
+                          ></path>
+                        </svg>
+                        <input
+                          type="range"
+                          id="video-volume-slider"
+                          min="0"
+                          max="1"
+                          step="0.1"
+                          value="0.5"
+                          class="w-40 h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-purple-500"
+                        />
+
+                        <button
+                          id="fullscreen-btn"
+                          class="cursor-pointer text-white hover:text-red-400 transition-colors ml-auto"
+                        >
+                          <svg
+                            class="w-6 h-6"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"
+                            ></path>
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
-                <video
-                  id="detail-video"
-                  class="hidden w-full h-full object-contain bg-black"
-                  controls={false}></video>
-
                 <div
-                  id="video-controls"
-                  class="hidden absolute bottom-0 left-0 right-0 p-3 bg-linear-to-t from-black/80 to-transparent transition-opacity duration-300 opacity-0 group-hover:opacity-100"
+                  class="w-full lg:w-1/2 flex flex-col justify-center text-left space-y-6"
                 >
-                  <div class="flex justify-between text-sm text-gray-400 mt-2">
-                    <span id="current-time">0:00</span>
-                    <span id="total-duration">0:00</span>
-                  </div>
-                  <input
-                    type="range"
-                    id="video-progress"
-                    min="0"
-                    max="100"
-                    value="0"
-                    class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-purple-500"
-                  />
-
-                  <div class="flex items-center gap-4 mt-2">
-                    <button
-                      id="video-play-pause-btn"
-                      class="cursor-pointer text-white hover:text-red-400 transition-colors"
+                  <div>
+                    <h2
+                      id="detail-name"
+                      class="text-4xl md:text-6xl font-bold font-orbitron text-white mb-2"
                     >
-                      <svg
-                        id="video-icon-play"
-                        class="w-8 h-8"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg
-                      >
-                      <svg
-                        id="video-icon-pause"
-                        class="w-8 h-8 hidden"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                        ><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg
-                      >
-                    </button>
+                    </h2>
+                    <p
+                      id="detail-creator"
+                      class="text-xl text-purple-300 font-semibold"
+                    >
+                    </p>
+                  </div>
 
+                  <div
+                    class="h-1 w-24 bg-linear-to-r from-purple-500 to-transparent rounded-full"
+                  >
+                  </div>
+
+                  <div
+                    id="audio-volume-controls"
+                    class="flex bg-purple-900/30 p-4 rounded-lg border border-purple-500/20 items-center gap-4"
+                  >
                     <svg
                       class="w-6 h-6 text-gray-300"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
-                      ><path
+                    >
+                      <path
                         stroke-linecap="round"
                         stroke-linejoin="round"
                         stroke-width="2"
                         d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"
-                      ></path></svg
-                    >
+                      ></path>
+                    </svg>
                     <input
+                      id="audio-volume-slider"
                       type="range"
-                      id="video-volume-slider"
                       min="0"
                       max="1"
                       step="0.1"
                       value="0.5"
-                      class="w-40 h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-purple-500"
+                      class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-purple-500"
                     />
+                  </div>
 
+                  <p
+                    id="detail-desc"
+                    class="text-lg text-gray-300 leading-relaxed"
+                  >
+                  </p>
+
+                  <div class="pt-6">
                     <button
-                      id="fullscreen-btn"
-                      class="cursor-pointer text-white hover:text-red-400 transition-colors ml-auto"
+                      id="detail-vote-btn"
+                      class="w-full md:w-auto px-8 py-4 bg-linear-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 rounded-lg text-xl font-bold text-white shadow-lg transition-all transform hover:scale-105 flex items-center justify-center gap-3"
                     >
                       <svg
                         class="w-6 h-6"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
                       >
                         <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"
-                        ></path>
+                          d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z"
+                        >
+                        </path>
                       </svg>
+                      Votar Ahora
                     </button>
+                    <p
+                      id="detail-votes"
+                      class="text-lg text-yellow-400 font-bold mt-2 flex items-center gap-2"
+                    >
+                      <span class="text-2xl">🔥</span>
+                      <span id="vote-count-number">0</span> Votos en esta
+                      categoría
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  <!--esto es para que en la pantalla de artworks puedas ver más a detalle un dibujo -->
+    <div
+      id="artwork-lightbox"
+      class="fixed inset-0 bg-black/80 z-50 hidden"
+    >
+      <div class="w-full h-full flex items-center justify-center px-4">
+        <div
+          class="relative max-w-5xl w-full max-h-[90vh] h-[90vh] flex items-center justify-center"
+        >
+          <button
+            id="lightbox-close"
+            class="absolute top-4 right-4 z-10 rounded-full bg-black/70 hover:bg-black text-white px-3 py-1 text-sm font-semibold"
+          >
+            Cerrar ✕
+          </button>
 
-            <div
-              class="w-full lg:w-1/2 flex flex-col justify-center text-left space-y-6"
-            >
-              <div>
-                <h2
-                  id="detail-name"
-                  class="text-4xl md:text-6xl font-bold font-orbitron text-white mb-2"
-                >
-                </h2>
-                <p
-                  id="detail-creator"
-                  class="text-xl text-purple-300 font-semibold"
-                >
-                </p>
-              </div>
-
-              <div
-                class="h-1 w-24 bg-linear-to-r from-purple-500 to-transparent rounded-full"
-              >
-              </div>
-
-              <div
-                id="audio-volume-controls"
-                class="flex bg-purple-900/30 p-4 rounded-lg border border-purple-500/20 items-center gap-4"
-              >
-                <svg
-                  class="w-6 h-6 text-gray-300"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  ><path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"
-                  ></path></svg
-                >
-                <input
-                  id="audio-volume-slider"
-                  type="range"
-                  min="0"
-                  max="1"
-                  step="0.1"
-                  value="0.5"
-                  class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-purple-500"
-                />
-              </div>
-
-              <p id="detail-desc" class="text-lg text-gray-300 leading-relaxed">
-              </p>
-
-              <div class="pt-6">
-                <button
-                  id="detail-vote-btn"
-
-                  class="w-full md:w-auto px-8 py-4 bg-linear-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 rounded-lg text-xl font-bold text-white shadow-lg transition-all transform hover:scale-105 flex items-center justify-center gap-3"
-                >
-                  <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                      d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z"
-                    >
-                    </path></svg
-                  >
-                  Votar Ahora
-                </button>
-                <p id="detail-votes" class="text-lg text-yellow-400 font-bold mt-2 flex items-center gap-2">
-  <span class="text-2xl">🔥</span> <span id="vote-count-number">0</span> Votos en esta categoría
-</p>
-              </div>
-            </div>
+          <div
+            class="w-full h-full bg-black rounded-xl overflow-hidden flex items-center justify-center"
+          >
+            <img
+              id="lightbox-img"
+              src=""
+              alt="Vista ampliada del artwork"
+              class="max-w-none select-none cursor-grab"
+              draggable="false"
+            />
           </div>
         </div>
       </div>
@@ -324,34 +437,150 @@ import categories from "../data/categories.ts";
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
   }
+  .category-card-bg {
+    filter: blur(1px);
+  }
+  .category-card-glass {
+    background-color: rgba(15, 23, 42, 0.372); /* oscuro opaco */
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-radius: 1.5rem;
+    border: 3px solid rgba(250, 204, 21, 0.9);
+    box-shadow:
+      0 0 25px rgba(250, 204, 21, 0.45),
+      0 18px 45px rgba(0, 0, 0, 0.75),
+      0 0 30px rgba(15, 23, 42, 0.9);
+  }
   .nav-arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 50;
-    width: 4rem;
-    height: 4rem;
+    position: relative;
+    flex-shrink: 0;
+    width: 3.5rem;
+    height: 3.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: rgba(88, 28, 135, 0.5);
+    background-color: rgba(88, 28, 135, 0.6);
     color: #ffffff;
     border-radius: 9999px;
     border: 1px solid rgba(168, 85, 247, 0.7);
     box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
-    transition: all 300ms ease-in-out;
+    transition: transform 200ms ease, box-shadow 200ms ease, background-color 200ms ease;
   }
-  #prev-category {
-    left: 0;
-    margin-left: -6rem;
+/* lo del artwork*/
+  #artwork-lightbox {
+    backdrop-filter: blur(6px);
+    touch-action: none;
   }
-  #next-category {
-    right: 0;
-    margin-right: -6rem;
+  #lightbox-img {
+    transition: transform 0.1s ease-out;
+    touch-action: none;
+  }
+  .artwork-fit-contain {
+    object-fit: contain !important;
+  }
+  .artwork-fit-cover {
+    object-fit: cover !important;
+  }
+  .artwork-detail-wrap:hover .artwork-zoom-img {
+    transform: scale(1.03);
+  }
+
+  .artwork-detail-wrap:hover #artwork-zoom-hint {
+    opacity: 1;
+    transform: translateY(0);
+  }
+/* la televisión de nominados */
+  .tv-frame {
+    border-radius: 2.5rem;
+    border: 4px solid rgba(250, 204, 21, 0.9); /* amarillo similar a los nominados */
+    box-shadow:
+      0 0 25px rgba(250, 204, 21, 0.5),
+      0 0 60px rgba(88, 28, 135, 0.4);
+    padding: 2.5rem 1.25rem 2rem; /* más padding arriba para la cabecera */
+    background: radial-gradient(circle at top center, rgba(255, 255, 255, 0.06), transparent 55%),
+                rgba(10, 10, 20, 0.95);
+    overflow: hidden;
+  }
+
+  /* Capa interior de la pantalla.*/
+  .tv-screen-bg {
+    background-image:
+      radial-gradient(circle at 20% 0%, rgba(250, 204, 21, 0.12), transparent 55%),
+      radial-gradient(circle at 80% 100%, rgba(147, 51, 234, 0.18), transparent 55%),
+      linear-gradient(to bottom, rgba(3, 7, 18, 0.95), rgba(15, 23, 42, 0.98));
+    background-size: cover;
+    background-position: center;
+    opacity: 0.6;
+  }
+  .tv-header-glass {
+    background-color: rgba(15, 23, 42, 0.82);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-radius: 1.5rem;
+    border: 1px solid rgba(148, 163, 184, 0.4);
+    box-shadow:
+      0 18px 45px rgba(0, 0, 0, 0.75),
+      0 0 25px rgba(15, 23, 42, 0.9);
+  }
+/* animaciones para las transiciones, cuando cambias de categoría */
+  .nominee-anim-container {
+    position: relative;
+  }
+  .slide-out-left {
+    animation: slideOutLeft 260ms ease forwards;
+  }
+  .slide-in-right {
+    animation: slideInRight 260ms ease forwards;
+  }
+  .slide-out-right {
+    animation: slideOutRight 260ms ease forwards;
+  }
+  .slide-in-left {
+    animation: slideInLeft 260ms ease forwards;
+  }
+  @keyframes slideOutLeft {
+    from {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateX(-40px);
+    }
+  }
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  @keyframes slideOutRight {
+    from {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateX(40px);
+    }
+  }
+  @keyframes slideInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
   }
   .nav-arrow:hover {
-    background-color: rgba(126, 34, 206, 0.8);
-    transform: translateY(-50%) scale(1.15);
+    background-color: rgba(126, 34, 206, 0.9);
+    transform: scale(1.1);
     box-shadow: 0 0 30px rgba(168, 85, 247, 0.8);
   }
   .stroke-text-white {
@@ -360,15 +589,9 @@ import categories from "../data/categories.ts";
     color: transparent;
   }
   @media (max-width: 768px) {
-    #prev-category {
-      margin-left: -5rem;
-    }
-    #next-category {
-      margin-right: -5rem;
-    }
     .nav-arrow {
-      width: 3rem;
-      height: 3rem;
+      width: 2.75rem;
+      height: 2.75rem;
     }
   }
 </style>
@@ -407,6 +630,9 @@ import categories from "../data/categories.ts";
     const detailCreator = document.getElementById("detail-creator");
     const detailDesc = document.getElementById("detail-desc");
     
+    // MÁS COSAS PARA EL ARTWORK...
+    const artworkZoomHint = document.getElementById("artwork-zoom-hint");
+
     // REFERENCIA AL CONTADOR DE VOTOS
     const voteCountNumber = document.getElementById("vote-count-number");
 
@@ -431,6 +657,167 @@ import categories from "../data/categories.ts";
 
     let currentCategoryIndex = 0;
     let currentAudio = null;
+
+
+    // lo del artwork...
+    const artworkLightbox = document.getElementById("artwork-lightbox");
+    const lightboxImg = document.getElementById("lightbox-img");
+    const lightboxClose = document.getElementById("lightbox-close");
+
+    let lastDetailImageSrc = "";
+    let lastIsArtwork = false;
+    let zoomScale = 1;
+    let panX = 0;
+    let panY = 0;
+    let isPanning = false;
+    let panStartX = 0;
+    let panStartY = 0;
+
+    const updateLightboxTransform = () => {
+      if (!lightboxImg) return;
+      lightboxImg.style.transform = `translate(${panX}px, ${panY}px) scale(${zoomScale})`;
+    };
+
+    const resetLightboxView = () => {
+      zoomScale = 1;
+      panX = 0;
+      panY = 0;
+      updateLightboxTransform();
+    };
+    // Abrir visor al hacer click en la imagen de detalle para los artworks
+  if (detailImg && artworkLightbox && lightboxImg) {
+      detailImg.addEventListener("click", () => {
+          if (!lastIsArtwork || !lastDetailImageSrc) return;
+          lightboxImg.src = lastDetailImageSrc;
+          resetLightboxView();
+          artworkLightbox.classList.remove("hidden");
+          artworkLightbox.classList.add("flex");
+          document.body.style.overflow = "hidden";
+      });
+  }
+
+  // Cerrar visor
+  if (lightboxClose && artworkLightbox) {
+      lightboxClose.addEventListener("click", () => {
+          artworkLightbox.classList.add("hidden");
+          artworkLightbox.classList.remove("flex");
+          document.body.style.overflow = "";
+      });
+  }
+
+  // Cerrar clickeando fuera de la imagen
+  if (artworkLightbox) {
+      artworkLightbox.addEventListener("click", (e) => {
+          if (e.target === artworkLightbox) {
+              artworkLightbox.classList.add("hidden");
+              artworkLightbox.classList.remove("flex");
+              document.body.style.overflow = "";
+          }
+      });
+  }
+
+  // Zoom con la rueda
+  if (lightboxImg) {
+    lightboxImg.addEventListener("dragstart", (e) => {
+      e.preventDefault();
+    });
+
+    lightboxImg.addEventListener(
+      "wheel",
+      (e) => {
+        if (!artworkLightbox || artworkLightbox.classList.contains("hidden")) return;
+
+        e.preventDefault();
+        const delta = e.deltaY > 0 ? -0.1 : 0.1;
+
+        zoomScale = Math.min(4, Math.max(1, zoomScale + delta));
+        updateLightboxTransform();
+      },
+      { passive: false }
+    );
+
+    lightboxImg.addEventListener("mousedown", (e) => {
+      // Permitir paneo si hay zoom > 1 o si la imagen ya es más grande que el contenedor
+      const wrapper = lightboxImg.parentElement;
+      const rect = lightboxImg.getBoundingClientRect();
+      const canPanAtScale1 =
+        wrapper &&
+        (rect.width > wrapper.clientWidth + 1 ||
+          rect.height > wrapper.clientHeight + 1);
+
+      if (zoomScale === 1 && !canPanAtScale1) return;
+
+      isPanning = true;
+      lightboxImg.style.cursor = "grabbing";
+      panStartX = e.clientX - panX;
+      panStartY = e.clientY - panY;
+    });
+
+    window.addEventListener("mousemove", (e) => {
+      if (!isPanning) return;
+      panX = e.clientX - panStartX;
+      panY = e.clientY - panStartY;
+      updateLightboxTransform();
+    });
+
+    window.addEventListener("mouseup", () => {
+      if (!isPanning) return;
+      isPanning = false;
+      lightboxImg.style.cursor = "grab";
+    });
+
+
+    // soporte para las máquinas tiktok
+      lightboxImg.addEventListener("touchstart", (e) => {
+        if (!artworkLightbox || artworkLightbox.classList.contains("hidden")) return;
+        const touch = e.touches[0];
+        if (!touch) return;
+
+        const wrapper = lightboxImg.parentElement;
+        const rect = lightboxImg.getBoundingClientRect();
+        const canPanAtScale1 =
+          wrapper &&
+          (rect.width > wrapper.clientWidth + 1 ||
+            rect.height > wrapper.clientHeight + 1);
+
+        if (zoomScale === 1 && !canPanAtScale1) return;
+
+        isPanning = true;
+        lightboxImg.style.cursor = "grabbing";
+        panStartX = touch.clientX - panX;
+        panStartY = touch.clientY - panY;
+      }, { passive: true }); // start puede ser passive
+
+      window.addEventListener("touchmove", (e) => {
+        if (!isPanning) return;
+
+        const touch = e.touches[0];
+        if (!touch) return;
+
+        e.preventDefault();
+
+        panX = touch.clientX - panStartX;
+        panY = touch.clientY - panStartY;
+        updateLightboxTransform();
+      }, { passive: false }); 
+
+      window.addEventListener("touchend", () => {
+        if (!isPanning) return;
+        isPanning = false;
+        lightboxImg.style.cursor = "grab";
+      });
+
+      window.addEventListener("touchcancel", () => {
+        if (!isPanning) return;
+        isPanning = false;
+        lightboxImg.style.cursor = "grab";
+      });
+
+
+  }
+
+  // las caricaturas
+    const tvScreenBgEls = document.querySelectorAll(".tv-screen-bg");
 
     // --- CARGA DE DATOS (INICIAL Y REACTIVA) ---
     const loadData = async () => {
@@ -474,32 +861,74 @@ import categories from "../data/categories.ts";
 
     // --- LÓGICA PRINCIPAL ---
 
-    const showCategoryDetails = (index) => {
+    const showCategoryDetails = (index, direction = "none") => {
       currentCategoryIndex = index;
       const category = categories[index];
 
       if (!category) {
-          console.error("Categoría no encontrada en índice:", index);
-          return;
+        console.error("Categoría no encontrada en índice:", index);
+        return;
       }
 
-      nomineeContent.classList.add("opacity-0");
+      // las caricaturas...
+    if (tvScreenBgEls && tvScreenBgEls.length) {
+      tvScreenBgEls.forEach((el) => {
+        if (category.tvBackground) {
+          el.style.backgroundImage = `url('${category.tvBackground}')`;
+          el.style.opacity = "0.9";
+        } else {
+          el.style.backgroundImage = "";
+          el.style.opacity = "0.6";
+        }
+      });
+    }
+
+      const ANIM_DURATION = 260; 
+
+      nomineeContent.classList.remove(
+        "slide-out-left",
+        "slide-out-right",
+        "slide-in-left",
+        "slide-in-right"
+      );
+
+      let outClass = "";
+      let inClass = "";
+
+      if (direction === "next") {
+        outClass = "slide-out-left";
+        inClass = "slide-in-right";
+      } else if (direction === "prev") {
+        outClass = "slide-out-right";
+        inClass = "slide-in-left";
+      } else {
+        outClass = "slide-out-left";
+        inClass = "slide-in-right";
+      }
+
+      // Animación de salida
+      nomineeContent.classList.add(outClass);
 
       setTimeout(() => {
+        // --- ACTUALIZAR CONTENIDO DE LA CATEGORÍA ---
         nomineeTitle.textContent = category.title;
         nomineeList.innerHTML = "";
 
         category.nominees.forEach((nominee) => {
           const nomineeEl = document.createElement("div");
-          nomineeEl.className = "relative aspect-square overflow-hidden rounded-lg border-4 border-amber-400 transition-transform transform hover:scale-105 group shadow-lg cursor-pointer";
+          nomineeEl.className =
+            "relative aspect-square overflow-hidden rounded-lg border-4 border-amber-400 transition-transform transform hover:scale-105 group shadow-lg cursor-pointer basis-1/2 md:basis-1/3 lg:basis-1/4 max-w-xs";
 
           const nameLength = nominee.name.length;
           const hasSpaces = nominee.name.includes(" ");
           let largeNameClass = "text-3xl sm:text-5xl break-words";
-          
-          if (!hasSpaces && nameLength > 10) largeNameClass = "text-xl sm:text-2xl break-all leading-none";
-          else if (nameLength > 25) largeNameClass = "text-xl sm:text-2xl break-words leading-tight";
-          else if (nameLength > 15) largeNameClass = "text-2xl sm:text-3xl break-words leading-tight";
+
+          if (!hasSpaces && nameLength > 10)
+            largeNameClass = "text-xl sm:text-2xl break-all leading-none";
+          else if (nameLength > 25)
+            largeNameClass = "text-xl sm:text-2xl break-words leading-tight";
+          else if (nameLength > 15)
+            largeNameClass = "text-2xl sm:text-3xl break-words leading-tight";
 
           nomineeEl.innerHTML = `
             <img src="${nominee.image}" alt="${nominee.name}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
@@ -516,13 +945,22 @@ import categories from "../data/categories.ts";
           nomineeList.appendChild(nomineeEl);
         });
 
-        nomineeContent.classList.remove("opacity-0");
-      }, 300);
+        
+        nomineeContent.classList.remove(outClass);
+        nomineeContent.classList.add(inClass);
+
+        
+        setTimeout(() => {
+          nomineeContent.classList.remove(inClass);
+        }, ANIM_DURATION);
+      }, ANIM_DURATION);
     };
+
 
     const showNomineeDetailView = (nominee) => {
       stopAllMedia();
       const currentCategory = categories[currentCategoryIndex];
+      const isArtworkCategory = currentCategory.id === "3"; 
 
       // 1. MOSTRAR CONTEO GENERAL DE LA CATEGORÍA
       const catKey = currentCategory.id;
@@ -628,10 +1066,21 @@ successAudio.play().catch(e => console.log("Audio bloqueado por navegador", e));
       detailDesc.textContent = nominee.description || "Sin descripción disponible.";
 
       detailImg.classList.add("hidden");
+      detailImg.classList.remove("cursor-zoom-in", "artwork-zoom-img", "artwork-fit-contain", "artwork-fit-cover");
+      lastDetailImageSrc = "";
+      lastIsArtwork = false;
       audioOverlay.classList.add("hidden");
       detailVideo.classList.add("hidden");
       audioVolumeControls.classList.add("hidden");
       videoControls.classList.add("hidden");
+
+      if (mediaContainer) {
+        mediaContainer.classList.remove("artwork-detail-wrap");
+      }
+
+      if (artworkZoomHint) {
+        artworkZoomHint.classList.add("hidden");
+      }
 
       if (mediaContainer) {
         mediaContainer.classList.add("aspect-square");
@@ -678,6 +1127,33 @@ successAudio.play().catch(e => console.log("Audio bloqueado por navegador", e));
       } else {
         detailImg.src = nominee.image;
         detailImg.classList.remove("hidden");
+
+        lastDetailImageSrc = nominee.image;
+        lastIsArtwork = isArtworkCategory;
+
+        if (isArtworkCategory) {
+          // Ajuste especial para artworks
+          detailImg.classList.add("artwork-fit-contain", "cursor-zoom-in", "artwork-zoom-img");
+          detailImg.classList.remove("artwork-fit-cover");
+
+          if (mediaContainer) {
+            mediaContainer.classList.add("artwork-detail-wrap");
+          }
+          if (artworkZoomHint) {
+            artworkZoomHint.classList.remove("hidden");
+          }
+        } else {
+          // Resto de categorías: comportamiento normal
+          detailImg.classList.add("artwork-fit-cover");
+          detailImg.classList.remove("artwork-fit-contain", "cursor-zoom-in", "artwork-zoom-img");
+
+          if (mediaContainer) {
+            mediaContainer.classList.remove("artwork-detail-wrap");
+          }
+          if (artworkZoomHint) {
+            artworkZoomHint.classList.add("hidden");
+          }
+        }     
       }
 
       nomineeView.classList.add("opacity-0");
@@ -716,8 +1192,8 @@ successAudio.play().catch(e => console.log("Audio bloqueado por navegador", e));
     if (videoPlayPauseBtn) { videoPlayPauseBtn.addEventListener("click", () => { if (!detailVideo) return; if (detailVideo.paused) { detailVideo.play(); if(videoIconPlay) videoIconPlay.classList.add("hidden"); if(videoIconPause) videoIconPause.classList.remove("hidden"); } else { detailVideo.pause(); if(videoIconPlay) videoIconPlay.classList.remove("hidden"); if(videoIconPause) videoIconPause.classList.add("hidden"); } }); }
     if (videoProgress) { videoProgress.addEventListener("input", (e) => { if (detailVideo) { const seekTime = (e.target.value / 100) * detailVideo.duration; detailVideo.currentTime = seekTime; } }); }
     if (videoVolumeSlider) { videoVolumeSlider.addEventListener("input", (e) => { if (detailVideo) detailVideo.volume = e.target.value; }); }
-    if (prevBtn) { prevBtn.addEventListener("click", () => { const newIndex = (currentCategoryIndex - 1 + categories.length) % categories.length; showCategoryDetails(newIndex); }); }
-    if (nextBtn) { nextBtn.addEventListener("click", () => { const newIndex = (currentCategoryIndex + 1) % categories.length; showCategoryDetails(newIndex); }); }
+    if (prevBtn) {prevBtn.addEventListener("click", () => {const newIndex = (currentCategoryIndex - 1 + categories.length) % categories.length; showCategoryDetails(newIndex, "prev");});}
+    if (nextBtn) {nextBtn.addEventListener("click", () => {const newIndex = (currentCategoryIndex + 1) % categories.length; showCategoryDetails(newIndex, "next");});}
     if (fullscreenBtn && mediaContainer) { fullscreenBtn.addEventListener("click", () => { if (!document.fullscreenElement) { mediaContainer.requestFullscreen().catch((err) => console.error(err)); } else { document.exitFullscreen(); } }); }
   });
 </script>

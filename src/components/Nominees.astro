@@ -6,7 +6,7 @@ const nominees = [
 		category: "Mejor Clip",
 		thumbnail: "🎬",
 		votes: "12.5K",
-		image: "/img/ph-1.jpg" 
+		image: "/img/lag_uconstr_placeholder.png" // estas cosas todavía se tienen que cambiar, solo son imagenes placeholder.
 	},
 	{
 		id: 2,
@@ -14,7 +14,7 @@ const nominees = [
 		category: "Mejor Momento",
 		thumbnail: "⚡",
 		votes: "9.8K",
-		image: "/img/ph-1.jpg"
+		image: "/img/lag_uconstr_placeholder.png"
 	},
 	{
 		id: 3,
@@ -22,7 +22,7 @@ const nominees = [
 		category: "Mejor Reacción",
 		thumbnail: "😮",
 		votes: "8.3K",
-		image: "/img/ph-1.jpg"
+		image: "/img/lag_uconstr_placeholder.png"
 	},
 	{
 		id: 4,
@@ -30,7 +30,7 @@ const nominees = [
 		category: "Mejor Edición",
 		thumbnail: "🎨",
 		votes: "7.2K",
-		image: "/img/ph-1.jpg"
+		image: "/img/lag_uconstr_placeholder.png"
 	},
 	{
 		id: 5,
@@ -38,7 +38,7 @@ const nominees = [
 		category: "Mejor Fail",
 		thumbnail: "💥",
 		votes: "6.9K",
-		image: "/img/ph-1.jpg"
+		image: "/img/lag_uconstr_placeholder.png"
 	},
 	{
 		id: 6,
@@ -46,7 +46,7 @@ const nominees = [
 		category: "Sorpresa del Año",
 		thumbnail: "🎮",
 		votes: "5.4K",
-		image: "/img/ph-1.jpg"
+		image: "/img/lag_uconstr_placeholder.png"
 	},
 ];
 ---
@@ -67,58 +67,70 @@ const nominees = [
 
 		<!-- Grid de nominados -->
 		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-			{nominees.map((nominee) => (
-					<div
-						class="group relative backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-red-500/50 transition-all duration-500 transform hover:scale-105"
-					>
-						<!-- Thumbnail placeholder -->
-						<div class="relative h-48 flex items-center justify-center overflow-hidden">
-							<!-- Imagen detrás de la thumbnail -->
-							{nominee.image && (
-								<img
-									src={nominee.image}
-									alt={`Fondo ${nominee.name}`}
-									class="absolute inset-0 w-full h-full object-cover opacity-85 group-hover:opacity-95 transition-all duration-500 transform group-hover:scale-110"
-								/>
-							)}
+			{nominees.map((nominee, index) => {
+			const total = nominees.length;
+			const remainder = total % 3;
 
-							<!-- tinte -->
-							<div class="absolute inset-0 bg-linear-to-br from-gray-800/40 to-gray-900/40 mix-blend-overlay group-hover:from-red-900/30 group-hover:to-purple-900/30 transition-all duration-300"></div>
+			const isLonelyLast = remainder === 1 && index === total - 1;
+			const isFirstOfLastPair = remainder === 2 && index === total - 2;
 
-							<!-- el emoji ese o lo que chucha sea jsjs -->
-							<div class="relative z-10 text-8xl transform group-hover:scale-125 transition-transform duration-300">
-								{nominee.thumbnail}
-							</div>
-						
-							<!-- Overlay gradiente -->
-							<div class="absolute inset-0 bg-linear-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-						</div>
+			const extraClass =
+			isLonelyLast || isFirstOfLastPair ? " lg:col-start-2" : "";
 
-						<!-- Contenido -->
-						<div class="p-6">
-							<div class="flex justify-between items-start mb-3">
-								<div>
-									<h3 class="text-xl font-black text-white mb-1">{nominee.name}</h3>
-									<p class="text-sm text-red-400 font-bold">{nominee.category}</p>
-								</div>
-								<div class="text-right">
-									<div class="text-yellow-400 font-black text-lg">{nominee.votes}</div>
-									<div class="text-xs text-gray-500">votos</div>
-								</div>
-							</div>
+			return (
+			<div
+				class={
+				"group relative backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-red-500/50 transition-all duration-500 transform hover:scale-105" +
+				extraClass
+				}
+			>
+				{/* Thumbnail */}
+				<div class="relative h-48 flex items-center justify-center overflow-hidden">
+				{nominee.image && (
+					<img
+					src={nominee.image}
+					alt={`Fondo ${nominee.name}`}
+					class="absolute inset-0 w-full h-full object-cover opacity-85 group-hover:opacity-95 transition-all duration-500 transform group-hover:scale-110"
+					/>
+				)}
 
-							<!-- Barra de votación -->
-							<div class="mt-4 h-2 bg-gray-800 rounded-full overflow-hidden">
-								<div class="h-full bg-linear-to-r from-red-600 to-orange-500 rounded-full" style={"width: " + (Math.random() * 80 + 20) + "%"}></div>
-							</div>
+				<div class="absolute inset-0 bg-linear-to-br from-gray-800/40 to-gray-900/40 mix-blend-overlay group-hover:from-red-900/30 group-hover:to-purple-900/30 transition-all duration-300"></div>
 
-							<!-- Botón de voto -->
-							<button class="w-full mt-4 py-2 px-4 bg-linear-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-bold rounded-lg transition-all duration-300 transform hover:scale-105">
-								Votar
-							</button>
-						</div>
+				<div class="relative z-10 text-8xl transform group-hover:scale-125 transition-transform duration-300">
+					{nominee.thumbnail}
+				</div>
+
+				<div class="absolute inset-0 bg-linear-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+				</div>
+
+				{/* Contenido */}
+				<div class="p-6">
+				<div class="flex justify-between items-start mb-3">
+					<div>
+					<h3 class="text-xl font-black text-white mb-1">{nominee.name}</h3>
+					<p class="text-sm text-red-400 font-bold">{nominee.category}</p>
 					</div>
-			))}
+					<div class="text-right">
+					<div class="text-yellow-400 font-black text-lg">{nominee.votes}</div>
+					<div class="text-xs text-gray-500">votos</div>
+					</div>
+				</div>
+
+				<div class="mt-4 h-2 bg-gray-800 rounded-full overflow-hidden">
+					<div
+					class="h-full bg-linear-to-r from-red-600 to-orange-500 rounded-full"
+					style={"width: " + (Math.random() * 80 + 20) + "%"}
+					></div>
+				</div>
+
+				<button class="w-full mt-4 py-2 px-4 bg-linear-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-bold rounded-lg transition-all duration-300 transform hover:scale-105">
+					Votar
+				</button>
+				</div>
+			</div>
+			);
+		})
+			}
 		</div>
 	</div>
 </section>
