@@ -3,7 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import Navbar from "../layouts/Navbar.astro";
 import Footer from "../layouts/Footer.astro";
 import categories from "../data/categories.ts";
-import spinImage from "../assets/spin.gif"; //
+import spinImage from "/img/spin.gif";
 
 ---
 
@@ -159,7 +159,7 @@ import spinImage from "../assets/spin.gif"; //
                     <div class="w-full lg:w-1/2">
                         <div id="media-container" class="relative aspect-square rounded-xl overflow-hidden border-4 border-purple-500/30 shadow-[0_0_30px_rgba(168,85,247,0.3)] group bg-black transition-all duration-300">
                             
-                            <div id="media-loader" class="hidden absolute inset-0 z-40 flex items-center justify-center bg-black/60 backdrop-blur-sm transition-opacity duration-300">
+                            <div id="media-loader" class="hidden absolute inset-0 z-40 items-center justify-center bg-black/60 backdrop-blur-sm transition-opacity duration-300">
                                 <img src={spinImage.src} alt="Cargando..." class="w-16 h-16 opacity-90 animate-pulse" />
                             </div>
 

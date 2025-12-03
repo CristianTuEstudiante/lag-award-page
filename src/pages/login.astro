@@ -19,7 +19,7 @@ import Footer from '../layouts/Footer.astro';
       <div class="space-y-6">
         <button 
           id="google-login-page-btn"
-          class="w-full flex items-center justify-center gap-3 px-6 py-4 bg-white text-gray-900 rounded-xl font-bold text-lg hover:bg-gray-100 hover:scale-[1.02] transition-all duration-200 shadow-lg group"
+          class="cursor-pointer w-full flex items-center justify-center gap-3 px-6 py-4 bg-white text-gray-900 rounded-xl font-bold text-lg hover:bg-gray-100 hover:scale-[1.02] transition-all duration-200 shadow-lg group"
         >
           <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -55,7 +55,7 @@ import Footer from '../layouts/Footer.astro';
     btn.addEventListener('click', async () => {
         // Feedback visual de carga
         const originalContent = btn.innerHTML;
-        btn.innerHTML = '<img src="/src/assets/spin.gif" alt="Cargando" class="w-6 h-6 mr-2 inline-block" /> Cargando...';
+        btn.innerHTML = '<img src="/img/spin.gif" alt="Cargando" class="w-6 h-6 mr-2 inline-block" /> Cargando...';
         btn.setAttribute('disabled', 'true');
 
         const { error } = await supabase.auth.signInWithOAuth({
