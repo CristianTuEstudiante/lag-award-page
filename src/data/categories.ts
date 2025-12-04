@@ -165,7 +165,7 @@ const categories = [
       },
       {
         name: "Left 4 Dead 2 Lima Infection",
-        creator: "Johan00",
+        creator: "Johan009",
         video: "https://res.cloudinary.com/dkjaq3i9p/video/upload/v1764678111/Lets_Play_1_Johan_jzn9u3.webm",
         description: "El humor y desesperación se apoderan de El JOHAAAAN.",
       },

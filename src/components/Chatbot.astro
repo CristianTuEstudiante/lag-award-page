@@ -87,6 +87,9 @@
 </style>
 
 <script>
+
+  document.addEventListener('astro:page-load', () => {
+
   const toggleBtn = document.getElementById('toggle-chat');
   const closeBtn = document.getElementById('close-chat');
   const chatWindow = document.getElementById('chat-window');
@@ -194,5 +197,6 @@
       chatInput.disabled = false;
       chatInput.focus();
     }
+  });
   });
 </script>
