@@ -843,8 +843,59 @@ import categories from "../data/categories.ts";
     }
     if (videoProgress) { videoProgress.addEventListener("input", (e) => { if (detailVideo) { const seekTime = (e.target.value / 100) * detailVideo.duration; detailVideo.currentTime = seekTime; } }); }
     if (videoVolumeSlider) { videoVolumeSlider.addEventListener("input", (e) => { if (detailVideo) detailVideo.volume = e.target.value; }); }
-    if (fullscreenBtn && mediaContainer) { fullscreenBtn.addEventListener("click", () => { if (!document.fullscreenElement) { mediaContainer.requestFullscreen().catch((err) => console.error(err)); } else { document.exitFullscreen(); } }); }
-    
+    const toggleFullScreen = () => {
+        const doc = document;
+        const container = mediaContainer;
+        const video = detailVideo;
+
+        // Detectar si ya estamos en fullscreen (soporte para varios navegadores)
+        const isFullScreen = doc.fullscreenElement || 
+                             doc.webkitFullscreenElement || 
+                             doc.mozFullScreenElement || 
+                             doc.msFullscreenElement;
+
+        if (!isFullScreen) {
+            // INTENTAR ENTRAR A FULLSCREEN
+            if (container.requestFullscreen) {
+                container.requestFullscreen().catch(err => {
+                    console.warn("Error estándar fullscreen:", err);
+                    // Fallback si falla el contenedor (común en iOS): intentar con el video directo
+                    if (video && video.webkitEnterFullscreen) video.webkitEnterFullscreen();
+                });
+            } else if (container.webkitRequestFullscreen) {
+                container.webkitRequestFullscreen(); // Safari/Chrome antiguos
+            } else if (container.mozRequestFullScreen) {
+                container.mozRequestFullScreen(); // Firefox
+            } else if (container.msRequestFullscreen) {
+                container.msRequestFullscreen(); // IE/Edge
+            } else if (video && video.webkitEnterFullscreen) {
+                // FALLBACK CRÍTICO PARA IPHONE (iOS)
+                // En iPhone, solo el elemento <video> puede ir a pantalla completa.
+                // Esto abrirá el reproductor nativo de iOS.
+                video.webkitEnterFullscreen();
+            }
+        } else {
+            // SALIR DE FULLSCREEN
+            if (doc.exitFullscreen) {
+                doc.exitFullscreen();
+            } else if (doc.webkitExitFullscreen) {
+                doc.webkitExitFullscreen();
+            } else if (doc.mozCancelFullScreen) {
+                doc.mozCancelFullScreen();
+            } else if (doc.msExitFullscreen) {
+                doc.msExitFullscreen();
+            }
+        }
+    };
+
+    if (fullscreenBtn && mediaContainer) { 
+        fullscreenBtn.addEventListener("click", (e) => { 
+            // IMPORTANTE: Detener la propagación evita que el click en el botón 
+            // también dispare el evento del contenedor que oculta/muestra los controles.
+            e.stopPropagation(); 
+            toggleFullScreen(); 
+        }); 
+    }
     // Navegación
     if (prevBtn) {prevBtn.addEventListener("click", () => {const newIndex = (currentCategoryIndex - 1 + categories.length) % categories.length; showCategoryDetails(newIndex, "prev");});}
     if (nextBtn) {nextBtn.addEventListener("click", () => {const newIndex = (currentCategoryIndex + 1) % categories.length; showCategoryDetails(newIndex, "next");});}
