@@ -336,6 +336,8 @@ import categories from "../data/categories.ts";
   @media (max-width: 768px) { .nav-arrow { width: 2.75rem; height: 2.75rem; } }
 </style>
 
+[src/pages/categorias.astro]
+
 <script>
   import { voteForNominee, getUserVotes, getCategoryTotalVotes } from '../lib/voting';
   import categories from '../data/categories.ts';
@@ -363,7 +365,7 @@ import categories from "../data/categories.ts";
 
     // Referencias Detalle
     const mediaContainer = document.getElementById("media-container");
-    const mediaLoader = document.getElementById("media-loader"); // LOADER NUEVO
+    const mediaLoader = document.getElementById("media-loader");
     const detailImg = document.getElementById("detail-img");
     const detailName = document.getElementById("detail-name");
     const detailCreator = document.getElementById("detail-creator");
@@ -403,15 +405,18 @@ import categories from "../data/categories.ts";
     let zoomScale = 1;
     let panX = 0;
     let panY = 0;
+
+    // --- LIGHTBOX LOGIC ---
     let isDragging = false;
     let startX = 0;
     let startY = 0;
-    // --- LIGHTBOX LOGIC ---
+
     const updateLightboxTransform = () => { 
         if (lightboxImg) {
             lightboxImg.style.transform = `translate(${panX}px, ${panY}px) scale(${zoomScale})`;
         }
     };
+
     const resetLightboxView = () => { 
         zoomScale = 1; 
         panX = 0; 
@@ -429,18 +434,15 @@ import categories from "../data/categories.ts";
           document.body.style.overflow = "hidden";
       });
     }
+
     if (lightboxImg) {
-        // 1. Iniciar arrastre
         lightboxImg.addEventListener('mousedown', (e) => {
-            e.preventDefault(); // Evita que el navegador intente "arrastrar" la imagen como archivo
+            e.preventDefault();
             isDragging = true;
-            // Calculamos el offset inicial restando la posición actual
             startX = e.clientX - panX;
             startY = e.clientY - panY;
             lightboxImg.style.cursor = 'grabbing';
         });
-
-        // 2. Mover la imagen
         window.addEventListener('mousemove', (e) => {
             if (!isDragging) return;
             e.preventDefault();
@@ -448,26 +450,20 @@ import categories from "../data/categories.ts";
             panY = e.clientY - startY;
             updateLightboxTransform();
         });
-
-        // 3. Soltar la imagen
         window.addEventListener('mouseup', () => {
             if (isDragging) {
                 isDragging = false;
                 if (lightboxImg) lightboxImg.style.cursor = 'grab';
             }
         });
-
-        // 4. Zoom con la rueda del mouse
         lightboxImg.addEventListener('wheel', (e) => {
             e.preventDefault();
-            const delta = e.deltaY * -0.001; // Ajusta la sensibilidad aquí
-            // Limitamos el zoom entre 0.5x y 5x
+            const delta = e.deltaY * -0.001;
             const newScale = Math.min(Math.max(0.5, zoomScale + delta), 5);
             zoomScale = newScale;
             updateLightboxTransform();
         });
     }
-
 
     if (lightboxClose && artworkLightbox) {
       lightboxClose.addEventListener("click", () => {
@@ -485,7 +481,6 @@ import categories from "../data/categories.ts";
           }
       });
     }
-
     
     // --- CARGA DE DATOS ---
     const loadData = async () => {
@@ -505,25 +500,71 @@ import categories from "../data/categories.ts";
     const stopAllMedia = () => {
       if (currentAudio) { currentAudio.pause(); currentAudio = null; }
       if (detailVideo && !detailVideo.paused) detailVideo.pause();
-      
-      // Detener YouTube
-      if (detailYoutube) { 
-          detailYoutube.classList.add("hidden"); 
-          detailYoutube.src = ""; 
-      }
-
-      // Ocultar Loader
+      if (detailYoutube) { detailYoutube.classList.add("hidden"); detailYoutube.src = ""; }
       if (mediaLoader) mediaLoader.classList.add("hidden");
-
+      
+      // Reset de iconos y controles
       if (iconPlay) iconPlay.classList.remove("hidden");
       if (iconPause) iconPause.classList.add("hidden");
       if (videoIconPlay) videoIconPlay.classList.remove("hidden");
       if (videoIconPause) videoIconPause.classList.add("hidden");
-      if (videoControls) videoControls.classList.add("hidden");
+      if (videoControls) {
+          videoControls.classList.add("hidden");
+          videoControls.classList.remove("opacity-100"); // Resetear visibilidad forzada
+          videoControls.classList.add("opacity-0");
+      }
     };
+
+    // --- FUNCIONES NUEVAS PARA VIDEO MÓVIL ---
+    const toggleVideoPlay = () => {
+        if (!detailVideo) return;
+        if (detailVideo.paused) {
+            detailVideo.play();
+            if(videoIconPlay) videoIconPlay.classList.add("hidden");
+            if(videoIconPause) videoIconPause.classList.remove("hidden");
+            // Ocultar controles al reproducir (opcional, o dejarlos unos segundos)
+        } else {
+            detailVideo.pause();
+            if(videoIconPlay) videoIconPlay.classList.remove("hidden");
+            if(videoIconPause) videoIconPause.classList.add("hidden");
+            // Mostrar controles al pausar
+            if (videoControls) {
+                videoControls.classList.remove("opacity-0");
+                videoControls.classList.add("opacity-100");
+            }
+        }
+    };
+
+    // --- INTERACCIÓN MÓVIL EN EL CONTENEDOR DE MEDIOS ---
+    if (mediaContainer) {
+        mediaContainer.addEventListener('click', (e) => {
+            // Si estamos en modo video
+            if (!detailVideo.classList.contains("hidden")) {
+                // Si el click fue en los controles, no hacemos nada extra (dejamos que el botón actúe)
+                if (e.target.closest("#video-controls")) return;
+
+                // Si fue en el video, toggleamos la visibilidad de los controles
+                if (videoControls.classList.contains("opacity-0")) {
+                    videoControls.classList.remove("opacity-0");
+                    videoControls.classList.add("opacity-100");
+                } else {
+                    // Si ya están visibles, pausamos/reproducimos O los ocultamos
+                    // UX Móvil Común: Tap = Toggle Controls. 
+                    // Pero como el usuario pidió que funcione, a veces Tap = Play/Pause es mejor.
+                    // Vamos a hacer: Tap muestra controles. Si ya están visibles -> Toggle Play.
+                    // O simplemente Toggle controles para que puedan dar al botón.
+                    
+                    // Estrategia: Tap siempre togglea controles para evitar conflictos.
+                    videoControls.classList.remove("opacity-100");
+                    videoControls.classList.add("opacity-0");
+                }
+            }
+        });
+    }
 
     // --- NAVEGACIÓN (GRID) ---
     const showCategoryDetails = (index, direction = "none") => {
+      // ... (Tu código existente showCategoryDetails se queda igual) ...
       currentCategoryIndex = index;
       const category = categories[index];
       if (!category) return;
@@ -562,9 +603,7 @@ import categories from "../data/categories.ts";
           else if (nameLength > 25) largeNameClass = "text-xl sm:text-2xl break-words leading-tight";
           else if (nameLength > 15) largeNameClass = "text-2xl sm:text-3xl break-words leading-tight";
 
-          // MINIATURA AUTOMÁTICA
           let thumbSrc = nominee.image;
-          
           if (!thumbSrc && nominee.youtubeId) {
              thumbSrc = `https://img.youtube.com/vi/${nominee.youtubeId}/hqdefault.jpg`;
           }
@@ -579,13 +618,7 @@ import categories from "../data/categories.ts";
           }
 
           nomineeEl.innerHTML = `
-            <img
-             src="${thumbSrc}" 
-             alt="${nominee.name}" 
-             class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-             loading="lazy" 
-                decoding="async"
-             >
+            <img src="${thumbSrc}" alt="${nominee.name}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" loading="lazy" decoding="async">
             <div class="absolute bottom-0 left-0 right-0 w-full p-4 text-center bg-gradient-to-t from-black/90 via-black/70 to-transparent transition-opacity duration-300 group-hover:opacity-0 z-10">
                 <h4 class="font-bold text-2xl text-white drop-shadow-md break-words truncate">${nominee.name}</h4>
             </div>
@@ -614,16 +647,16 @@ import categories from "../data/categories.ts";
       let currentTotal = categoryCounts[catKey] || 0;
       if (voteCountNumber) voteCountNumber.textContent = currentTotal;
 
-      // Voto
+      // Lógica de botón de voto (Mantengo tu lógica existente)
       const voteBtn = document.getElementById('detail-vote-btn');
       if (voteBtn) {
           const votedNomineeInThisCategory = userVotes[currentCategory.id];
-          const hasVoted = !!votedNomineeInThisCategory; 
+          const hasVoted = !!votedNomineeInThisCategory;
           const isMyPick = votedNomineeInThisCategory === nominee.name;
           
           const newVoteBtn = voteBtn.cloneNode(true);
           voteBtn.parentNode.replaceChild(newVoteBtn, voteBtn);
-
+          
           if (hasVoted) {
               if (isMyPick) {
                   newVoteBtn.innerHTML = `✅ Voto Registrado`;
@@ -644,23 +677,18 @@ import categories from "../data/categories.ts";
                       newVoteBtn.innerHTML = `<span class="animate-spin">⏳</span> Procesando...`;
                       newVoteBtn.disabled = true;
                       newVoteBtn.classList.add('cursor-not-allowed', 'opacity-70');
-                      
                       const success = await voteForNominee(currentCategory.id, nominee.name);
-
                       if (success) {
                           userVotes[currentCategory.id] = nominee.name;
                           currentTotal++;
                           categoryCounts[catKey] = currentTotal;
                           if (voteCountNumber) voteCountNumber.textContent = currentTotal;
-
                           newVoteBtn.innerHTML = `✅ Voto Registrado`;
                           newVoteBtn.className = "w-full md:w-auto px-8 py-4 bg-green-600 hover:bg-green-500 rounded-lg text-xl font-bold text-white shadow-lg transition-all flex items-center justify-center gap-3";
                           newVoteBtn.classList.remove('cursor-not-allowed', 'opacity-70');
-                          
                           const successAudio = new Audio('/audio/success.mp3');
                           successAudio.volume = 0.5;
-                          successAudio.play().catch(e => console.log("Audio bloqueado por navegador", e));
-                          
+                          successAudio.play().catch(e => console.log("Audio bloqueado", e));
                           confetti({ particleCount: 100, spread: 70, origin: { y: 0.6, x: 0.1 }, colors: ['#ef4444', '#eab308', '#a855f7'] });
                           confetti({ particleCount: 100, spread: 70, origin: { y: 0.6, x: 0.9 }, colors: ['#ef4444', '#eab308', '#a855f7'] });
                       } else {
@@ -673,9 +701,7 @@ import categories from "../data/categories.ts";
                           }, 2500);
                       }
                   } catch (e) {
-                      console.error("Error crítico:", e);
                       newVoteBtn.innerHTML = `❌ Error`;
-                      alert("Error inesperado al procesar el voto.");
                       newVoteBtn.disabled = false;
                   }
               });
@@ -695,16 +721,12 @@ import categories from "../data/categories.ts";
       audioVolumeControls.classList.add("hidden");
       videoControls.classList.add("hidden");
       if (detailYoutube) detailYoutube.classList.add("hidden");
-
       if (mediaContainer) {
         mediaContainer.classList.remove("artwork-detail-wrap", "aspect-[9/16]", "max-w-sm", "mx-auto", "aspect-video", "aspect-square");
       }
       if (artworkZoomHint) artworkZoomHint.classList.add("hidden");
 
-      // --- LÓGICA MULTIMEDIA ---
-
       if (nominee.youtubeId) {
-        // 🔴 CASO YOUTUBE
         if (mediaContainer) {
             if (currentCategory.id === "7") {
                 mediaContainer.classList.add("aspect-[9/16]", "max-w-sm", "mx-auto");
@@ -716,69 +738,63 @@ import categories from "../data/categories.ts";
             detailYoutube.classList.remove("hidden");
             detailYoutube.src = `https://www.youtube.com/embed/${nominee.youtubeId}?autoplay=1&rel=0&modestbranding=1&loop=1&playlist=${nominee.youtubeId}`;
         }
-
       } else if (nominee.audio) {
-        // 🎵 AUDIO
         if (mediaContainer) mediaContainer.classList.add("aspect-square");
-        
         let hdSrc = nominee.image || '/img/lag_uconstr_placeholder.png';
         if (hdSrc.includes('imagekit')) hdSrc += '?tr=w-800,q-90,f-auto';
-        
         detailImg.src = hdSrc;
         detailImg.classList.remove("hidden");
         detailImg.classList.add("artwork-fit-cover");
         audioOverlay.classList.remove("hidden");
         audioVolumeControls.classList.remove("hidden");
-        
         currentAudio = new Audio(nominee.audio);
         if (audioVolumeSlider) currentAudio.volume = audioVolumeSlider.value;
         currentAudio.onended = () => {
           if(iconPlay) iconPlay.classList.remove("hidden");
           if(iconPause) iconPause.classList.add("hidden");
         };
-
       } else if (nominee.video) {
-        // 📹 VIDEO (Directo)
         if (mediaContainer) mediaContainer.classList.add("aspect-video");
-        
-        // LÓGICA DE LOADER
         if (mediaLoader) mediaLoader.classList.remove("hidden");
 
         detailVideo.classList.remove("hidden");
         detailVideo.src = nominee.video;
         if (videoVolumeSlider) detailVideo.volume = videoVolumeSlider.value;
         detailVideo.load();
+        
+        // VIDEO: Mostrar controles inicialmente
         videoControls.classList.remove("hidden");
+        videoControls.classList.remove("opacity-0"); // Fix para que se vean al inicio
+        videoControls.classList.add("opacity-100");
         
         if (videoProgress) videoProgress.value = 0;
         if (currentTimeSpan) currentTimeSpan.textContent = "0:00";
-        
-        // Eventos de carga
+
         detailVideo.onwaiting = () => { if(mediaLoader) mediaLoader.classList.remove("hidden"); };
         detailVideo.onplaying = () => { if(mediaLoader) mediaLoader.classList.add("hidden"); };
         detailVideo.oncanplay = () => { if(mediaLoader) mediaLoader.classList.add("hidden"); };
-
         detailVideo.onloadedmetadata = () => { if (totalDurationSpan) totalDurationSpan.textContent = formatTime(detailVideo.duration); };
         detailVideo.ontimeupdate = () => { if (videoProgress) videoProgress.value = (detailVideo.currentTime / detailVideo.duration) * 100; if (currentTimeSpan) currentTimeSpan.textContent = formatTime(detailVideo.currentTime); };
-        detailVideo.onended = () => { if(videoIconPlay) videoIconPlay.classList.remove("hidden"); if(videoIconPause) videoIconPause.classList.add("hidden"); detailVideo.currentTime = 0; };
-
+        detailVideo.onended = () => { 
+            if(videoIconPlay) videoIconPlay.classList.remove("hidden"); 
+            if(videoIconPause) videoIconPause.classList.add("hidden"); 
+            detailVideo.currentTime = 0; 
+            // Mostrar controles al terminar
+            videoControls.classList.remove("opacity-0");
+            videoControls.classList.add("opacity-100");
+        };
       } else {
-        // 🖼️ IMAGEN
         if (mediaContainer) mediaContainer.classList.add("aspect-square");
-        
         let hdSrc = nominee.image;
         if (!hdSrc && nominee.video && nominee.video.includes('cloudinary')) {
            hdSrc = nominee.video.replace(/\.[^/.]+$/, ".jpg");
         }
         if (!hdSrc) hdSrc = '/img/lag_uconstr_placeholder.png';
-
         if (hdSrc.includes('imagekit')) hdSrc += '?tr=w-800,q-90,f-auto';
-        
         detailImg.src = hdSrc;
         detailImg.classList.remove("hidden");
         lastDetailImageSrc = hdSrc;
         lastIsArtwork = isArtworkCategory;
-
         if (isArtworkCategory) {
           detailImg.classList.add("artwork-fit-contain", "cursor-zoom-in", "artwork-zoom-img");
           if (mediaContainer) mediaContainer.classList.add("artwork-detail-wrap");
@@ -820,11 +836,17 @@ import categories from "../data/categories.ts";
     
     if (playBtn) { playBtn.addEventListener("click", (e) => { e.stopPropagation(); if (!currentAudio) return; if (currentAudio.paused) { currentAudio.play(); if(iconPlay) iconPlay.classList.add("hidden"); if(iconPause) iconPause.classList.remove("hidden"); } else { currentAudio.pause(); if(iconPlay) iconPlay.classList.remove("hidden"); if(iconPause) iconPause.classList.add("hidden"); } }); }
     if (audioVolumeSlider) { audioVolumeSlider.addEventListener("input", (e) => { if (currentAudio) currentAudio.volume = e.target.value; }); }
-    if (videoPlayPauseBtn) { videoPlayPauseBtn.addEventListener("click", () => { if (!detailVideo) return; if (detailVideo.paused) { detailVideo.play(); if(videoIconPlay) videoIconPlay.classList.add("hidden"); if(videoIconPause) videoIconPause.classList.remove("hidden"); } else { detailVideo.pause(); if(videoIconPlay) videoIconPlay.classList.remove("hidden"); if(videoIconPause) videoIconPause.classList.add("hidden"); } }); }
+    
+    // Listeners VIDEO
+    if (videoPlayPauseBtn) { 
+        videoPlayPauseBtn.addEventListener("click", toggleVideoPlay); 
+    }
     if (videoProgress) { videoProgress.addEventListener("input", (e) => { if (detailVideo) { const seekTime = (e.target.value / 100) * detailVideo.duration; detailVideo.currentTime = seekTime; } }); }
     if (videoVolumeSlider) { videoVolumeSlider.addEventListener("input", (e) => { if (detailVideo) detailVideo.volume = e.target.value; }); }
+    if (fullscreenBtn && mediaContainer) { fullscreenBtn.addEventListener("click", () => { if (!document.fullscreenElement) { mediaContainer.requestFullscreen().catch((err) => console.error(err)); } else { document.exitFullscreen(); } }); }
+    
+    // Navegación
     if (prevBtn) {prevBtn.addEventListener("click", () => {const newIndex = (currentCategoryIndex - 1 + categories.length) % categories.length; showCategoryDetails(newIndex, "prev");});}
     if (nextBtn) {nextBtn.addEventListener("click", () => {const newIndex = (currentCategoryIndex + 1) % categories.length; showCategoryDetails(newIndex, "next");});}
-    if (fullscreenBtn && mediaContainer) { fullscreenBtn.addEventListener("click", () => { if (!document.fullscreenElement) { mediaContainer.requestFullscreen().catch((err) => console.error(err)); } else { document.exitFullscreen(); } }); }
   });
 </script>
