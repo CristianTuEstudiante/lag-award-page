@@ -3,13 +3,11 @@ import Layout from "../layouts/Layout.astro";
 import Navbar from "../layouts/Navbar.astro";
 import Footer from "../layouts/Footer.astro";
 import categories from "../data/categories.ts";
-
-
 ---
 
 <Layout title="Categorías - LAGAWARDS">
   <Navbar />
-  <main class="pt-24 text-white min-h-screen">
+  <main id="main-content-container" class="pt-24 text-white min-h-screen">
     <div class="container mx-auto px-6 py-16">
       <div id="category-view" class="transition-opacity duration-300">
         <div class="text-center mb-16">
@@ -22,6 +20,15 @@ import categories from "../data/categories.ts";
           <p class="text-xl text-gray-300 mt-4 max-w-3xl mx-auto">
             Selecciona una categoría para ver los nominados.
           </p>
+
+          <div class="mt-8 flex items-center justify-center gap-3 p-3 bg-black/60 backdrop-blur-md rounded-full max-w-max mx-auto border border-white/10 shadow-lg select-none">
+            <label class="relative inline-flex items-center cursor-pointer group">
+                <input type="checkbox" value="" id="streamer-mode-toggle" class="sr-only peer" />
+                <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all border-gray-600 peer-checked:bg-purple-600"></div>
+                <span class="ms-3 text-sm font-bold text-gray-300 group-hover:text-white transition-colors">Modo Streamer (Ocultar Votos)</span>
+            </label>
+          </div>
+
         </div>
         <div
           id="category-grid"
@@ -65,17 +72,13 @@ import categories from "../data/categories.ts";
         id="nominee-view"
         class="hidden relative transition-opacity duration-300 opacity-0"
       >
-        <!-- Contenedor tipo "televisión" para todo el bloque de nominados -->
         <div class="relative mt-4 tv-frame">
-          <!-- Capa de fondo de la "pantalla" (aquí luego se puede poner una imagen o GIF) -->
           <div class="absolute inset-0 rounded-[2.3rem] overflow-hidden pointer-events-none tv-screen-bg"></div>
 
-          <!-- Contenido animado dentro de la TV -->
           <div
             id="nominee-content"
             class="relative z-10 transition-opacity duration-300 nominee-anim-container"
           >
-            <!-- Encabezado con glass oscuro: volver a categorías + título + flechas -->
             <div
               class="mb-10 px-4 sm:px-8 py-5 md:py-6 tv-header-glass flex flex-col gap-4 md:gap-6"
             >
@@ -143,12 +146,10 @@ import categories from "../data/categories.ts";
         class="hidden relative transition-opacity duration-300 opacity-0"
       >
         <div class="relative mt-4 tv-frame">
-          <!-- Fondo tipo TV para la vista de detalles -->
           <div
             class="absolute inset-0 rounded-[2.3rem] overflow-hidden pointer-events-none tv-screen-bg"
           ></div>
 
-          <!-- Contenido por encima del fondo -->
           <div class="relative z-10">
             <div class="mb-10 px-4 sm:px-8 py-5 md:py-6 tv-header-glass flex flex-col gap-4 md:gap-6">
                 <button id="back-to-nominees" class="cursor-pointer flex items-center gap-2 text-purple-400 font-bold mb-8 hover:text-purple-300 transition-colors">
@@ -157,10 +158,10 @@ import categories from "../data/categories.ts";
                 
                 <div class="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center lg:items-start">
                     <div class="w-full lg:w-1/2">
-                        <div id="media-container" class="relative aspect-square rounded-xl overflow-hidden border-4 border-purple-500/30 shadow-[0_0_30px_rgba(168,85,247,0.3)] group bg-black transition-all duration-300">
+                      <div id="media-container" class="relative aspect-square rounded-xl overflow-hidden border-4 border-purple-500/30 shadow-[0_0_30px_rgba(168,85,247,0.3)] group bg-black transition-all duration-300">
                             
                             <div id="media-loader" class="hidden absolute inset-0 z-40 items-center justify-center bg-black/60 backdrop-blur-sm transition-opacity duration-300">
-                                <img src="/img/spin.gif" alt="Cargando..." class="w-16 h-16 opacity-90 animate-pulse" />
+                              <img src="/img/spin.gif" alt="Cargando..." class="w-16 h-16 opacity-90 animate-pulse" />
                             </div>
 
                             <img id="detail-img" src="" alt="Imagen del nominado" class="w-full h-full object-cover absolute inset-0 transition-opacity duration-300" />
@@ -171,9 +172,9 @@ import categories from "../data/categories.ts";
 
                             <div id="audio-overlay" class="absolute inset-0 flex items-center justify-center cursor-pointer transition-colors hover:bg-black/50 z-20">
                                 <button id="play-btn" class="cursor-pointer bg-white/90 hover:bg-white text-purple-600 rounded-full p-6 w-24 h-24 flex items-center justify-center shadow-[0_0_20px_rgba(255,255,255,0.5)] transition-transform hover:scale-110 active:scale-95">
-                                    <svg id="icon-play" class="w-12 h-12 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg>
+                                  <svg id="icon-play" class="w-12 h-12 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg>
                                     <svg id="icon-pause" class="w-12 h-12 hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg>
-                                </button>
+                            </button>
                             </div>
 
                             <video 
@@ -202,13 +203,13 @@ import categories from "../data/categories.ts";
                                 <input type="range" id="video-progress" min="0" max="100" value="0" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-purple-500" />
                                 <div class="flex items-center gap-4 mt-2">
                                     <button id="video-play-pause-btn" class="cursor-pointer text-white hover:text-red-400 transition-colors">
-                                        <svg id="video-icon-play" class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg>
+                                      <svg id="video-icon-play" class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg>
                                         <svg id="video-icon-pause" class="w-8 h-8 hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg>
-                                    </button>
+                            </button>
                                     <input type="range" id="video-volume-slider" min="0" max="1" step="0.1" value="0.5" class="w-40 h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-purple-500" />
                                     <button id="fullscreen-btn" class="cursor-pointer text-white hover:text-red-400 transition-colors ml-auto">
                                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg>
-                                    </button>
+                                  </button>
                                 </div>
                             </div>
                         </div>
@@ -229,7 +230,7 @@ import categories from "../data/categories.ts";
 
                         <p id="detail-desc" class="text-lg text-gray-300 leading-relaxed"></p>
 
-                        <div class="pt-6">
+                        <div id="vote-controls-container" class="pt-6"> 
                             <button id="detail-vote-btn" class="w-full md:w-auto px-8 py-4 bg-linear-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 rounded-lg text-xl font-bold text-white shadow-lg transition-all transform hover:scale-105 flex items-center justify-center gap-3">
                                 <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z"></path></svg>
                                 Votar Ahora
@@ -239,20 +240,42 @@ import categories from "../data/categories.ts";
                                 <span id="vote-count-number">0</span> Votos en esta categoría
                             </p>
                         </div>
+                        
+                        <div id="streamer-mode-feedback" class="hidden pt-6">
+                            <p class="text-gray-500 font-mono text-sm italic">
+                                👁️ Modo Streamer Activo (Voto oculto)
+                            </p>
+                        </div>
+
                     </div>
                 </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  
-    <div id="artwork-lightbox" class="fixed inset-0 bg-black/80 z-50 hidden">
-      <div class="w-full h-full flex items-center justify-center px-4">
-        <div class="relative max-w-5xl w-full max-h-[90vh] h-[90vh] flex items-center justify-center">
-          <button id="lightbox-close" class="absolute top-4 right-4 z-10 rounded-full bg-black/70 hover:bg-black text-white px-3 py-1 text-sm font-semibold">Cerrar ✕</button>
-          <div class="w-full h-full bg-black rounded-xl overflow-hidden flex items-center justify-center">
-            <img id="lightbox-img" src="" alt="Vista ampliada del artwork" class="max-w-none select-none cursor-grab" draggable="false" />
+
+      <div
+        id="artwork-lightbox"
+        class="fixed inset-0 bg-black/80 z-50 hidden"
+      >
+        <div class="w-full h-full flex items-center justify-center px-4">
+          <div class="relative max-w-5xl w-full max-h-[90vh] h-[90vh] flex items-center justify-center">
+            <button
+              id="lightbox-close"
+              class="absolute top-4 right-4 z-10 rounded-full bg-black/70 hover:bg-black text-white px-3 py-1 text-sm font-semibold"
+              >Cerrar ✕</button
+            >
+            <div
+              class="w-full h-full bg-black rounded-xl overflow-hidden flex items-center justify-center"
+            >
+              <img
+                id="lightbox-img"
+                src=""
+                alt="Vista ampliada del artwork"
+                class="max-w-none select-none cursor-grab"
+                draggable="false"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -270,14 +293,17 @@ import categories from "../data/categories.ts";
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
   }
-  .category-card-bg { filter: blur(1px); }
+  .category-card-bg {
+    filter: blur(1px);
+  }
   .category-card-glass {
     background-color: rgba(15, 23, 42, 0.372);
     backdrop-filter: blur(2px);
     -webkit-backdrop-filter: blur(14px);
     border-radius: 1rem;
     border: 2px solid rgba(250, 204, 21, 0.9);
-    box-shadow: 0 0 25px rgba(250, 204, 21, 0.45), 0 18px 45px rgba(0, 0, 0, 0.75), 0 0 30px rgba(15, 23, 42, 0.9);
+    box-shadow: 0 0 25px rgba(250, 204, 21, 0.45),
+      0 18px 45px rgba(0, 0, 0, 0.75), 0 0 30px rgba(15, 23, 42, 0.9);
   }
   .nav-arrow {
     position: relative;
@@ -292,26 +318,64 @@ import categories from "../data/categories.ts";
     border-radius: 9999px;
     border: 1px solid rgba(168, 85, 247, 0.7);
     box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
-    transition: transform 200ms ease, box-shadow 200ms ease, background-color 200ms ease;
+    transition: transform 200ms ease, box-shadow 200ms ease,
+      background-color 200ms ease;
   }
   /* TV & Artwork styles */
-  #artwork-lightbox { backdrop-filter: blur(6px); touch-action: none; }
-  #lightbox-img { transition: transform 0.1s ease-out; touch-action: none; }
-  .artwork-fit-contain { object-fit: contain !important; }
-  .artwork-fit-cover { object-fit: cover !important; }
-  .artwork-detail-wrap:hover .artwork-zoom-img { transform: scale(1.03); }
-  .artwork-detail-wrap:hover #artwork-zoom-hint { opacity: 1; transform: translateY(0); }
+  #artwork-lightbox {
+    backdrop-filter: blur(6px);
+    touch-action: none;
+  }
+  #lightbox-img {
+    transition: transform 0.1s ease-out;
+    touch-action: none;
+  }
+  .artwork-fit-contain {
+    object-fit: contain !important;
+  }
+  .artwork-fit-cover {
+    object-fit: cover !important;
+  }
+  .artwork-detail-wrap:hover .artwork-zoom-img {
+    transform: scale(1.03);
+  }
+  .artwork-detail-wrap:hover #artwork-zoom-hint {
+    opacity: 1;
+    transform: translateY(0);
+  }
   .tv-frame {
     border-radius: 2.5rem;
     border: 4px solid rgba(250, 204, 21, 0.9);
-    box-shadow: 0 0 25px rgba(250, 204, 21, 0.5), 0 0 60px rgba(88, 28, 135, 0.4);
+    box-shadow: 0 0 25px rgba(250, 204, 21, 0.5),
+      0 0 60px rgba(88, 28, 135, 0.4);
     padding: 2.5rem 1.25rem 2rem;
-    background: radial-gradient(circle at top center, rgba(255, 255, 255, 0.06), transparent 55%), rgba(10, 10, 20, 0.95);
+    background: radial-gradient(
+        circle at top center,
+        rgba(255, 255, 255, 0.06),
+        transparent 55%
+      ),
+      rgba(10, 10, 20, 0.95);
     overflow: hidden;
   }
   .tv-screen-bg {
-    background-image: radial-gradient(circle at 20% 0%, rgba(250, 204, 21, 0.12), transparent 55%), radial-gradient(circle at 80% 100%, rgba(147, 51, 234, 0.18), transparent 55%), linear-gradient(to bottom, rgba(3, 7, 18, 0.95), rgba(15, 23, 42, 0.98));
-    background-size: cover; background-position: center; opacity: 0.6;
+    background-image: radial-gradient(
+        circle at 20% 0%,
+        rgba(250, 204, 21, 0.12),
+        transparent 55%
+      ),
+      radial-gradient(
+        circle at 80% 100%,
+        rgba(147, 51, 234, 0.18),
+        transparent 55%
+      ),
+      linear-gradient(
+        to bottom,
+        rgba(3, 7, 18, 0.95),
+        rgba(15, 23, 42, 0.98)
+      );
+    background-size: cover;
+    background-position: center;
+    opacity: 0.6;
   }
   .tv-header-glass {
     background-color: rgba(15, 23, 42, 0.82);
@@ -319,35 +383,138 @@ import categories from "../data/categories.ts";
     -webkit-backdrop-filter: blur(14px);
     border-radius: 1.5rem;
     border: 1px solid rgba(148, 163, 184, 0.4);
-    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.75), 0 0 25px rgba(15, 23, 42, 0.9);
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.75),
+      0 0 25px rgba(15, 23, 42, 0.9);
   }
   /* Animations */
-  .nominee-anim-container { position: relative; }
-  .slide-out-left { animation: slideOutLeft 260ms ease forwards; }
-  .slide-in-right { animation: slideInRight 260ms ease forwards; }
-  .slide-out-right { animation: slideOutRight 260ms ease forwards; }
-  .slide-in-left { animation: slideInLeft 260ms ease forwards; }
-  @keyframes slideOutLeft { from { opacity: 1; transform: translateX(0); } to { opacity: 0; transform: translateX(-40px); } }
-  @keyframes slideInRight { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
-  @keyframes slideOutRight { from { opacity: 1; transform: translateX(0); } to { opacity: 0; transform: translateX(40px); } }
-  @keyframes slideInLeft { from { opacity: 0; transform: translateX(-40px); } to { opacity: 1; transform: translateX(0); } }
-  .nav-arrow:hover { background-color: rgba(126, 34, 206, 0.9); transform: scale(1.1); box-shadow: 0 0 30px rgba(168, 85, 247, 0.8); }
-  .stroke-text-white { -webkit-text-stroke: 1.5px white; text-stroke: 1.5px white; color: transparent; }
-  @media (max-width: 768px) { .nav-arrow { width: 2.75rem; height: 2.75rem; } }
+  .nominee-anim-container {
+    position: relative;
+  }
+  .slide-out-left {
+    animation: slideOutLeft 260ms ease forwards;
+  }
+  .slide-in-right {
+    animation: slideInRight 260ms ease forwards;
+  }
+  .slide-out-right {
+    animation: slideOutRight 260ms ease forwards;
+  }
+  .slide-in-left {
+    animation: slideInLeft 260ms ease forwards;
+  }
+  @keyframes slideOutLeft {
+    from {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateX(-40px);
+    }
+  }
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  @keyframes slideOutRight {
+    from {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateX(40px);
+    }
+  }
+  @keyframes slideInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  .nav-arrow:hover {
+    background-color: rgba(126, 34, 206, 0.9);
+    transform: scale(1.1);
+    box-shadow: 0 0 30px rgba(168, 85, 247, 0.8);
+  }
+  .stroke-text-white {
+    -webkit-text-stroke: 1.5px white;
+    text-stroke: 1.5px white;
+    color: transparent;
+  }
+  @media (max-width: 768px) {
+    .nav-arrow {
+      width: 2.75rem;
+      height: 2.75rem;
+    }
+  }
+
+  /* --- MODO STREAMER (CSS GLOBAL) --- */
+  /* Usamos :global() para que afecte a elementos creados dinámicamente con JS */
+  
+  /* Ocultar el indicador de check verde en las miniaturas */
+  :global(#main-content-container.streamer-mode-active .nominee-vote-status) {
+    display: none !important;
+  }
+
+  /* Ocultar el bloque de botones de voto en el detalle */
+  :global(#main-content-container.streamer-mode-active #vote-controls-container) {
+    display: none !important;
+  }
+
+  /* Mostrar mensaje de feedback cuando está activo */
+  :global(#main-content-container.streamer-mode-active #streamer-mode-feedback) {
+    display: block !important;
+  }
 </style>
 
-[src/pages/categorias.astro]
-
 <script>
-  import { voteForNominee, getUserVotes, getCategoryTotalVotes } from '../lib/voting';
-  import categories from '../data/categories.ts';
-  import { $currentUser } from '../stores/authStore';
-  import confetti from 'canvas-confetti';
+  import {
+    voteForNominee,
+    getUserVotes,
+    getCategoryTotalVotes,
+  } from "../lib/voting";
+  import categories from "../data/categories.ts";
+  import { $currentUser } from "../stores/authStore";
+  import confetti from "canvas-confetti";
 
   document.addEventListener("astro:page-load", () => {
-    
-    let userVotes = {}; 
-    let categoryCounts = {}; 
+    // --- NUEVAS REFERENCIAS Y ESTADO PARA MODO STREAMER ---
+    const streamerModeToggle = document.getElementById(
+      "streamer-mode-toggle"
+    ) as HTMLInputElement;
+    const mainContentContainer = document.getElementById(
+      "main-content-container"
+    );
+    const STREAMER_MODE_KEY = "lag_streamer_mode";
+
+    const loadStreamerModeState = () => {
+      const isActive = localStorage.getItem(STREAMER_MODE_KEY) === "true";
+      if (mainContentContainer) {
+        if (isActive) {
+          mainContentContainer.classList.add("streamer-mode-active");
+        } else {
+          mainContentContainer.classList.remove("streamer-mode-active");
+        }
+      }
+      if (streamerModeToggle) {
+        streamerModeToggle.checked = isActive;
+      }
+      return isActive;
+    };
+
+    let userVotes = {};
+    let categoryCounts = {};
 
     // --- REFERENCIAS DOM ---
     const categoryView = document.getElementById("category-view");
@@ -366,14 +533,15 @@ import categories from "../data/categories.ts";
     // Referencias Detalle
     const mediaContainer = document.getElementById("media-container");
     const mediaLoader = document.getElementById("media-loader");
-    const detailImg = document.getElementById("detail-img");
+    const detailImg = document.getElementById("detail-img") as HTMLImageElement;
     const detailName = document.getElementById("detail-name");
     const detailCreator = document.getElementById("detail-creator");
     const detailDesc = document.getElementById("detail-desc");
     const voteCountNumber = document.getElementById("vote-count-number");
-    
     // Referencia YouTube
-    const detailYoutube = document.getElementById("detail-youtube");
+    const detailYoutube = document.getElementById(
+      "detail-youtube"
+    ) as HTMLIFrameElement;
 
     // Referencias Audio/Video/Lightbox
     const audioOverlay = document.getElementById("audio-overlay");
@@ -381,25 +549,33 @@ import categories from "../data/categories.ts";
     const iconPlay = document.getElementById("icon-play");
     const iconPause = document.getElementById("icon-pause");
     const audioVolumeControls = document.getElementById("audio-volume-controls");
-    const audioVolumeSlider = document.getElementById("audio-volume-slider");
-    const detailVideo = document.getElementById("detail-video");
+    const audioVolumeSlider = document.getElementById(
+      "audio-volume-slider"
+    ) as HTMLInputElement;
+    const detailVideo = document.getElementById("detail-video") as HTMLVideoElement;
     const videoControls = document.getElementById("video-controls");
     const videoPlayPauseBtn = document.getElementById("video-play-pause-btn");
     const videoIconPlay = document.getElementById("video-icon-play");
     const videoIconPause = document.getElementById("video-icon-pause");
-    const videoProgress = document.getElementById("video-progress");
+    const videoProgress = document.getElementById(
+      "video-progress"
+    ) as HTMLInputElement;
     const currentTimeSpan = document.getElementById("current-time");
     const totalDurationSpan = document.getElementById("total-duration");
-    const videoVolumeSlider = document.getElementById("video-volume-slider");
+    const videoVolumeSlider = document.getElementById(
+      "video-volume-slider"
+    ) as HTMLInputElement;
     const fullscreenBtn = document.getElementById("fullscreen-btn");
     const artworkLightbox = document.getElementById("artwork-lightbox");
-    const lightboxImg = document.getElementById("lightbox-img");
+    const lightboxImg = document.getElementById(
+      "lightbox-img"
+    ) as HTMLImageElement;
     const lightboxClose = document.getElementById("lightbox-close");
     const artworkZoomHint = document.getElementById("artwork-zoom-hint");
 
     if (!categoryView) return;
     let currentCategoryIndex = 0;
-    let currentAudio = null;
+    let currentAudio: HTMLAudioElement | null = null;
     let lastDetailImageSrc = "";
     let lastIsArtwork = false;
     let zoomScale = 1;
@@ -411,160 +587,174 @@ import categories from "../data/categories.ts";
     let startX = 0;
     let startY = 0;
 
-    const updateLightboxTransform = () => { 
-        if (lightboxImg) {
-            lightboxImg.style.transform = `translate(${panX}px, ${panY}px) scale(${zoomScale})`;
-        }
+    const updateLightboxTransform = () => {
+      if (lightboxImg) {
+        lightboxImg.style.transform = `translate(${panX}px, ${panY}px) scale(${zoomScale})`;
+      }
     };
 
-    const resetLightboxView = () => { 
-        zoomScale = 1; 
-        panX = 0; 
-        panY = 0; 
-        updateLightboxTransform(); 
+    const resetLightboxView = () => {
+      zoomScale = 1;
+      panX = 0;
+      panY = 0;
+      updateLightboxTransform();
     };
 
     if (detailImg && artworkLightbox && lightboxImg) {
       detailImg.addEventListener("click", () => {
-          if (!lastIsArtwork || !lastDetailImageSrc) return;
-          lightboxImg.src = lastDetailImageSrc;
-          resetLightboxView();
-          artworkLightbox.classList.remove("hidden");
-          artworkLightbox.classList.add("flex");
-          document.body.style.overflow = "hidden";
+        if (!lastIsArtwork || !lastDetailImageSrc) return;
+        lightboxImg.src = lastDetailImageSrc;
+        resetLightboxView();
+        artworkLightbox.classList.remove("hidden");
+        artworkLightbox.classList.add("flex");
+        document.body.style.overflow = "hidden";
       });
     }
 
     if (lightboxImg) {
-        lightboxImg.addEventListener('mousedown', (e) => {
-            e.preventDefault();
-            isDragging = true;
-            startX = e.clientX - panX;
-            startY = e.clientY - panY;
-            lightboxImg.style.cursor = 'grabbing';
-        });
-        window.addEventListener('mousemove', (e) => {
-            if (!isDragging) return;
-            e.preventDefault();
-            panX = e.clientX - startX;
-            panY = e.clientY - startY;
-            updateLightboxTransform();
-        });
-        window.addEventListener('mouseup', () => {
-            if (isDragging) {
-                isDragging = false;
-                if (lightboxImg) lightboxImg.style.cursor = 'grab';
-            }
-        });
-        lightboxImg.addEventListener('wheel', (e) => {
-            e.preventDefault();
-            const delta = e.deltaY * -0.001;
-            const newScale = Math.min(Math.max(0.5, zoomScale + delta), 5);
-            zoomScale = newScale;
-            updateLightboxTransform();
-        });
+      lightboxImg.addEventListener("mousedown", (e) => {
+        e.preventDefault();
+        isDragging = true;
+        startX = e.clientX - panX;
+        startY = e.clientY - panY;
+        lightboxImg.style.cursor = "grabbing";
+      });
+      window.addEventListener("mousemove", (e) => {
+        if (!isDragging) return;
+        e.preventDefault();
+        panX = e.clientX - startX;
+        panY = e.clientY - startY;
+        updateLightboxTransform();
+      });
+      window.addEventListener("mouseup", () => {
+        if (isDragging) {
+          isDragging = false;
+          if (lightboxImg) lightboxImg.style.cursor = "grab";
+        }
+      });
+      lightboxImg.addEventListener("wheel", (e) => {
+        e.preventDefault();
+        const delta = e.deltaY * -0.001;
+        const newScale = Math.min(Math.max(0.5, zoomScale + delta), 5);
+        zoomScale = newScale;
+        updateLightboxTransform();
+      });
     }
 
     if (lightboxClose && artworkLightbox) {
       lightboxClose.addEventListener("click", () => {
-          artworkLightbox.classList.add("hidden");
-          artworkLightbox.classList.remove("flex");
-          document.body.style.overflow = "";
+        artworkLightbox.classList.add("hidden");
+        artworkLightbox.classList.remove("flex");
+        document.body.style.overflow = "";
       });
     }
     if (artworkLightbox) {
       artworkLightbox.addEventListener("click", (e) => {
-          if (e.target === artworkLightbox) {
-              artworkLightbox.classList.add("hidden");
-              artworkLightbox.classList.remove("flex");
-              document.body.style.overflow = "";
-          }
+        if (e.target === artworkLightbox) {
+          artworkLightbox.classList.add("hidden");
+          artworkLightbox.classList.remove("flex");
+          document.body.style.overflow = "";
+        }
       });
     }
-    
+
     // --- CARGA DE DATOS ---
     const loadData = async () => {
-        setTimeout(async () => { userVotes = await getUserVotes(); }, 500);
+        // Aseguramos que el modo streamer se carga antes de obtener datos
+        loadStreamerModeState();
+
+        setTimeout(async () => {
+          userVotes = await getUserVotes();
+        }, 500);
         categoryCounts = await getCategoryTotalVotes();
     };
     loadData();
     $currentUser.subscribe(() => loadData());
 
+    // --- NEW: Toggle Listener for Streamer Mode ---
+    if (streamerModeToggle) {
+        streamerModeToggle.addEventListener('change', (e) => {
+            const isChecked = (e.target as HTMLInputElement).checked;
+            localStorage.setItem(STREAMER_MODE_KEY, isChecked ? 'true' : 'false');
+            loadStreamerModeState();
+            
+            // Forzamos un re-render si se está en la vista de nominados para que el checkmark se oculte/muestre
+            if (!nomineeView?.classList.contains("hidden")) {
+                showCategoryDetails(currentCategoryIndex, 'none'); // Re-render sin animación
+            }
+        });
+    }
+
     // --- HELPERS ---
-    const formatTime = (seconds) => {
+    const formatTime = (seconds: number) => {
       const minutes = Math.floor(seconds / 60);
       const remainingSeconds = Math.floor(seconds % 60);
       return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
     };
-
     const stopAllMedia = () => {
-      if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+      if (currentAudio) {
+        currentAudio.pause();
+        currentAudio = null;
+      }
       if (detailVideo && !detailVideo.paused) detailVideo.pause();
-      if (detailYoutube) { detailYoutube.classList.add("hidden"); detailYoutube.src = ""; }
+      if (detailYoutube) {
+        detailYoutube.classList.add("hidden");
+        detailYoutube.src = "";
+      }
       if (mediaLoader) mediaLoader.classList.add("hidden");
-      
+
       // Reset de iconos y controles
       if (iconPlay) iconPlay.classList.remove("hidden");
       if (iconPause) iconPause.classList.add("hidden");
       if (videoIconPlay) videoIconPlay.classList.remove("hidden");
       if (videoIconPause) videoIconPause.classList.add("hidden");
       if (videoControls) {
-          videoControls.classList.add("hidden");
-          videoControls.classList.remove("opacity-100"); // Resetear visibilidad forzada
-          videoControls.classList.add("opacity-0");
+        videoControls.classList.add("hidden");
+        videoControls.classList.remove("opacity-100"); // Resetear visibilidad forzada
+        videoControls.classList.add("opacity-0");
       }
     };
-
     // --- FUNCIONES NUEVAS PARA VIDEO MÓVIL ---
     const toggleVideoPlay = () => {
-        if (!detailVideo) return;
-        if (detailVideo.paused) {
-            detailVideo.play();
-            if(videoIconPlay) videoIconPlay.classList.add("hidden");
-            if(videoIconPause) videoIconPause.classList.remove("hidden");
-            // Ocultar controles al reproducir (opcional, o dejarlos unos segundos)
-        } else {
-            detailVideo.pause();
-            if(videoIconPlay) videoIconPlay.classList.remove("hidden");
-            if(videoIconPause) videoIconPause.classList.add("hidden");
-            // Mostrar controles al pausar
-            if (videoControls) {
-                videoControls.classList.remove("opacity-0");
-                videoControls.classList.add("opacity-100");
-            }
+      if (!detailVideo) return;
+      if (detailVideo.paused) {
+        detailVideo.play();
+        if (videoIconPlay) videoIconPlay.classList.add("hidden");
+        if (videoIconPause) videoIconPause.classList.remove("hidden");
+      } else {
+        detailVideo.pause();
+        if (videoIconPlay) videoIconPlay.classList.remove("hidden");
+        if (videoIconPause) videoIconPause.classList.add("hidden");
+        if (videoControls) {
+          videoControls.classList.remove("opacity-0");
+          videoControls.classList.add("opacity-100");
         }
+      }
     };
-
     // --- INTERACCIÓN MÓVIL EN EL CONTENEDOR DE MEDIOS ---
     if (mediaContainer) {
-        mediaContainer.addEventListener('click', (e) => {
-            // Si estamos en modo video
-            if (!detailVideo.classList.contains("hidden")) {
-                // Si el click fue en los controles, no hacemos nada extra (dejamos que el botón actúe)
-                if (e.target.closest("#video-controls")) return;
+      mediaContainer.addEventListener("click", (e) => {
+        // Si estamos en modo video
+        if (!detailVideo.classList.contains("hidden")) {
+          // Si el click fue en los controles, no hacemos nada extra
+          if (e.target instanceof Element && e.target.closest("#video-controls"))
+            return;
 
-                // Si fue en el video, toggleamos la visibilidad de los controles
-                if (videoControls.classList.contains("opacity-0")) {
-                    videoControls.classList.remove("opacity-0");
-                    videoControls.classList.add("opacity-100");
-                } else {
-                    // Si ya están visibles, pausamos/reproducimos O los ocultamos
-                    // UX Móvil Común: Tap = Toggle Controls. 
-                    // Pero como el usuario pidió que funcione, a veces Tap = Play/Pause es mejor.
-                    // Vamos a hacer: Tap muestra controles. Si ya están visibles -> Toggle Play.
-                    // O simplemente Toggle controles para que puedan dar al botón.
-                    
-                    // Estrategia: Tap siempre togglea controles para evitar conflictos.
-                    videoControls.classList.remove("opacity-100");
-                    videoControls.classList.add("opacity-0");
-                }
-            }
-        });
+          // Si fue en el video, toggleamos la visibilidad de los controles
+          if (videoControls?.classList.contains("opacity-0")) {
+            videoControls.classList.remove("opacity-0");
+            videoControls.classList.add("opacity-100");
+          } else if (videoControls) {
+            // Si ya están visibles -> Toggle Play.
+            videoControls.classList.remove("opacity-100");
+            videoControls.classList.add("opacity-0");
+          }
+        }
+      });
     }
 
     // --- NAVEGACIÓN (GRID) ---
-    const showCategoryDetails = (index, direction = "none") => {
-      // ... (Tu código existente showCategoryDetails se queda igual) ...
+    const showCategoryDetails = (index: number, direction = "none") => {
       currentCategoryIndex = index;
       const category = categories[index];
       if (!category) return;
@@ -572,52 +762,86 @@ import categories from "../data/categories.ts";
       const tvScreenBgEls = document.querySelectorAll(".tv-screen-bg");
       if (tvScreenBgEls && tvScreenBgEls.length) {
         tvScreenBgEls.forEach((el) => {
+          const styleEl = el as HTMLElement;
           if (category.tvBackground) {
-            el.style.backgroundImage = `url('${category.tvBackground}')`;
-            el.style.opacity = "0.9";
+            styleEl.style.backgroundImage = `url('${category.tvBackground}')`;
+            styleEl.style.opacity = "0.9";
           } else {
-            el.style.backgroundImage = "";
-            el.style.opacity = "0.6";
+            styleEl.style.backgroundImage = "";
+            styleEl.style.opacity = "0.6";
           }
         });
       }
 
       const ANIM_DURATION = 260;
-      nomineeContent.classList.remove("slide-out-left", "slide-out-right", "slide-in-left", "slide-in-right");
-      let outClass = direction === "next" ? "slide-out-left" : (direction === "prev" ? "slide-out-right" : "slide-out-left");
-      let inClass = direction === "next" ? "slide-in-right" : (direction === "prev" ? "slide-in-left" : "slide-in-right");
+      nomineeContent?.classList.remove(
+        "slide-out-left",
+        "slide-out-right",
+        "slide-in-left",
+        "slide-in-right"
+      );
+      let outClass =
+        direction === "next"
+          ? "slide-out-left"
+          : direction === "prev"
+          ? "slide-out-right"
+          : "slide-out-left";
+      let inClass =
+        direction === "next"
+          ? "slide-in-right"
+          : direction === "prev"
+          ? "slide-in-left"
+          : "slide-in-right";
 
-      nomineeContent.classList.add(outClass);
+      nomineeContent?.classList.add(outClass);
       setTimeout(() => {
-        nomineeTitle.textContent = category.title;
-        nomineeList.innerHTML = "";
+        if (nomineeTitle) nomineeTitle.textContent = category.title;
+        if (nomineeList) nomineeList.innerHTML = "";
 
         category.nominees.forEach((nominee) => {
           const nomineeEl = document.createElement("div");
-          nomineeEl.className = "relative aspect-square overflow-hidden rounded-lg border-4 border-amber-400 transition-transform transform hover:scale-105 group shadow-lg cursor-pointer basis-1/2 md:basis-1/3 lg:basis-1/4 max-w-xs";
-          
+          nomineeEl.className =
+            "relative aspect-square overflow-hidden rounded-lg border-4 border-amber-400 transition-transform transform hover:scale-105 group shadow-lg cursor-pointer basis-1/2 md:basis-1/3 lg:basis-1/4 max-w-xs";
+
           const nameLength = nominee.name.length;
           const hasSpaces = nominee.name.includes(" ");
           let largeNameClass = "text-3xl sm:text-5xl break-words";
-          if (!hasSpaces && nameLength > 10) largeNameClass = "text-xl sm:text-2xl break-all leading-none";
-          else if (nameLength > 25) largeNameClass = "text-xl sm:text-2xl break-words leading-tight";
-          else if (nameLength > 15) largeNameClass = "text-2xl sm:text-3xl break-words leading-tight";
+          if (!hasSpaces && nameLength > 10)
+            largeNameClass = "text-xl sm:text-2xl break-all leading-none";
+          else if (nameLength > 25)
+            largeNameClass = "text-xl sm:text-2xl break-words leading-tight";
+          else if (nameLength > 15)
+            largeNameClass = "text-2xl sm:text-3xl break-words leading-tight";
 
           let thumbSrc = nominee.image;
+
           if (!thumbSrc && nominee.youtubeId) {
-             thumbSrc = `https://img.youtube.com/vi/${nominee.youtubeId}/hqdefault.jpg`;
+            thumbSrc = `https://img.youtube.com/vi/${nominee.youtubeId}/hqdefault.jpg`;
           }
-          if (!thumbSrc && nominee.video && nominee.video.includes('cloudinary')) {
-             thumbSrc = nominee.video.replace(/\.[^/.]+$/, ".jpg");
+          if (
+            !thumbSrc &&
+            nominee.video &&
+            nominee.video.includes("cloudinary")
+          ) {
+            thumbSrc = nominee.video.replace(/\.[^/.]+$/, ".jpg");
           }
           if (!thumbSrc) {
-              thumbSrc = "/img/lag_uconstr_placeholder.png";
+            thumbSrc = "/img/lag_uconstr_placeholder.png";
           }
-          if (thumbSrc.includes('imagekit')) {
-              thumbSrc += '?tr=w-400,q-80,f-auto';
+          if (thumbSrc.includes("imagekit")) {
+            thumbSrc += "?tr=w-400,q-80,f-auto";
           }
 
+          // --- INDICADOR DE VOTO (se genera dinámicamente) ---
+          const votedNomineeInThisCategory = userVotes[category.id];
+          const isMyPick = votedNomineeInThisCategory === nominee.name;
+          // Añadimos la clase nominee-vote-status que ocultaremos con CSS Global si es necesario
+          const voteStatusHTML = isMyPick
+            ? `<div class="nominee-vote-status absolute top-2 right-2 z-30 p-2 bg-green-600 rounded-full shadow-lg text-sm transition-all transform group-hover:scale-110" title="Tu voto!"><svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg></div>`
+            : "";
+
           nomineeEl.innerHTML = `
+            ${voteStatusHTML} 
             <img src="${thumbSrc}" alt="${nominee.name}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" loading="lazy" decoding="async">
             <div class="absolute bottom-0 left-0 right-0 w-full p-4 text-center bg-gradient-to-t from-black/90 via-black/70 to-transparent transition-opacity duration-300 group-hover:opacity-0 z-10">
                 <h4 class="font-bold text-2xl text-white drop-shadow-md break-words truncate">${nominee.name}</h4>
@@ -628,130 +852,174 @@ import categories from "../data/categories.ts";
             </div>
           `;
           nomineeEl.addEventListener("click", () => showNomineeDetailView(nominee));
-          nomineeList.appendChild(nomineeEl);
+          nomineeList?.appendChild(nomineeEl);
         });
 
-        nomineeContent.classList.remove(outClass);
-        nomineeContent.classList.add(inClass);
-        setTimeout(() => { nomineeContent.classList.remove(inClass); }, ANIM_DURATION);
+        nomineeContent?.classList.remove(outClass);
+        nomineeContent?.classList.add(inClass);
+        setTimeout(() => {
+          nomineeContent?.classList.remove(inClass);
+        }, ANIM_DURATION);
       }, ANIM_DURATION);
     };
-
     // --- DETALLE DEL NOMINADO ---
-    const showNomineeDetailView = (nominee) => {
+    const showNomineeDetailView = (nominee: any) => {
       stopAllMedia();
       const currentCategory = categories[currentCategoryIndex];
-      const isArtworkCategory = currentCategory.id === "3"; 
+      const isArtworkCategory = currentCategory.id === "3";
 
       const catKey = currentCategory.id;
       let currentTotal = categoryCounts[catKey] || 0;
-      if (voteCountNumber) voteCountNumber.textContent = currentTotal;
+      if (voteCountNumber) voteCountNumber.textContent = currentTotal.toString();
 
-      // Lógica de botón de voto (Mantengo tu lógica existente)
-      const voteBtn = document.getElementById('detail-vote-btn');
+      // Lógica de botón de voto
+      const voteBtn = document.getElementById(
+        "detail-vote-btn"
+      ) as HTMLButtonElement | null;
+
       if (voteBtn) {
-          const votedNomineeInThisCategory = userVotes[currentCategory.id];
-          const hasVoted = !!votedNomineeInThisCategory;
-          const isMyPick = votedNomineeInThisCategory === nominee.name;
-          
-          const newVoteBtn = voteBtn.cloneNode(true);
-          voteBtn.parentNode.replaceChild(newVoteBtn, voteBtn);
-          
-          if (hasVoted) {
-              if (isMyPick) {
-                  newVoteBtn.innerHTML = `✅ Voto Registrado`;
-                  newVoteBtn.className = "w-full md:w-auto px-8 py-4 bg-green-600/90 text-white rounded-lg text-xl font-bold cursor-default shadow-inner border border-green-500/50 opacity-100";
-                  newVoteBtn.disabled = true;
-              } else {
-                  newVoteBtn.innerHTML = `🔒 Ya votaste en esta categoría`;
-                  newVoteBtn.className = "w-full md:w-auto px-8 py-4 bg-gray-800 text-gray-500 rounded-lg text-lg font-bold cursor-not-allowed border border-gray-700 opacity-75";
-                  newVoteBtn.disabled = true;
-              }
-          } else {
-              newVoteBtn.innerHTML = `<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z"></path></svg> Votar Ahora`;
-              newVoteBtn.className = "w-full md:w-auto px-8 py-4 bg-linear-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 rounded-lg text-xl font-bold text-white shadow-lg transition-all transform hover:scale-105 flex items-center justify-center gap-3";
-              newVoteBtn.disabled = false;
+        const votedNomineeInThisCategory = userVotes[currentCategory.id];
+        const hasVoted = !!votedNomineeInThisCategory;
+        const isMyPick = votedNomineeInThisCategory === nominee.name;
 
-              newVoteBtn.addEventListener('click', async () => {
-                  try {
-                      newVoteBtn.innerHTML = `<span class="animate-spin">⏳</span> Procesando...`;
-                      newVoteBtn.disabled = true;
-                      newVoteBtn.classList.add('cursor-not-allowed', 'opacity-70');
-                      const success = await voteForNominee(currentCategory.id, nominee.name);
-                      if (success) {
-                          userVotes[currentCategory.id] = nominee.name;
-                          currentTotal++;
-                          categoryCounts[catKey] = currentTotal;
-                          if (voteCountNumber) voteCountNumber.textContent = currentTotal;
-                          newVoteBtn.innerHTML = `✅ Voto Registrado`;
-                          newVoteBtn.className = "w-full md:w-auto px-8 py-4 bg-green-600 hover:bg-green-500 rounded-lg text-xl font-bold text-white shadow-lg transition-all flex items-center justify-center gap-3";
-                          newVoteBtn.classList.remove('cursor-not-allowed', 'opacity-70');
-                          const successAudio = new Audio('/audio/success.mp3');
-                          successAudio.volume = 0.5;
-                          successAudio.play().catch(e => console.log("Audio bloqueado", e));
-                          confetti({ particleCount: 100, spread: 70, origin: { y: 0.6, x: 0.1 }, colors: ['#ef4444', '#eab308', '#a855f7'] });
-                          confetti({ particleCount: 100, spread: 70, origin: { y: 0.6, x: 0.9 }, colors: ['#ef4444', '#eab308', '#a855f7'] });
-                      } else {
-                          newVoteBtn.innerHTML = `⚠️ No se pudo votar`;
-                          setTimeout(() => {
-                              newVoteBtn.innerHTML = `Votar Ahora`;
-                              newVoteBtn.className = "w-full md:w-auto px-8 py-4 bg-linear-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 rounded-lg text-xl font-bold text-white shadow-lg transition-all transform hover:scale-105 flex items-center justify-center gap-3";
-                              newVoteBtn.disabled = false;
-                              newVoteBtn.classList.remove('cursor-not-allowed', 'opacity-70');
-                          }, 2500);
-                      }
-                  } catch (e) {
-                      newVoteBtn.innerHTML = `❌ Error`;
-                      newVoteBtn.disabled = false;
-                  }
-              });
+        const newVoteBtn = voteBtn.cloneNode(true) as HTMLButtonElement;
+        voteBtn.parentNode?.replaceChild(newVoteBtn, voteBtn);
+
+        // Re-evaluamos el texto del botón
+        if (hasVoted) {
+          if (isMyPick) {
+            newVoteBtn.innerHTML = `✅ Tu Voto: ${nominee.name}`;
+            newVoteBtn.className =
+              "w-full md:w-auto px-8 py-4 bg-green-600/90 text-white rounded-lg text-xl font-bold cursor-default shadow-inner border border-green-500/50 opacity-100";
+            newVoteBtn.disabled = true;
+          } else {
+            newVoteBtn.innerHTML = `🔒 Ya votaste en esta categoría`;
+            newVoteBtn.className =
+              "w-full md:w-auto px-8 py-4 bg-gray-800 text-gray-500 rounded-lg text-lg font-bold cursor-not-allowed border border-gray-700 opacity-75";
+            newVoteBtn.disabled = true;
           }
+        } else {
+          newVoteBtn.innerHTML = `<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z"></path></svg> Votar Ahora`;
+            newVoteBtn.className =
+              "w-full md:w-auto px-8 py-4 bg-linear-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 rounded-lg text-xl font-bold text-white shadow-lg transition-all transform hover:scale-105 flex items-center justify-center gap-3";
+          newVoteBtn.disabled = false;
+
+          newVoteBtn.addEventListener("click", async () => {
+            try {
+              newVoteBtn.innerHTML = `<span class="animate-spin">⏳</span> Procesando...`;
+              newVoteBtn.disabled = true;
+              newVoteBtn.classList.add("cursor-not-allowed", "opacity-70");
+
+              const success = await voteForNominee(
+                currentCategory.id,
+                nominee.name
+              );
+              if (success) {
+                userVotes[currentCategory.id] = nominee.name;
+
+                currentTotal++;
+                categoryCounts[catKey] = currentTotal;
+                if (voteCountNumber)
+                  voteCountNumber.textContent = currentTotal.toString();
+                newVoteBtn.innerHTML = `✅ Tu Voto: ${nominee.name}`;
+                newVoteBtn.className =
+                  "w-full md:w-auto px-8 py-4 bg-green-600 hover:bg-green-500 rounded-lg text-xl font-bold text-white shadow-lg transition-all flex items-center justify-center gap-3";
+                newVoteBtn.classList.remove("cursor-not-allowed", "opacity-70");
+                const successAudio = new Audio("/audio/success.mp3");
+                successAudio.volume = 0.5;
+                successAudio.play().catch((e) => console.log("Audio bloqueado", e));
+                confetti({
+                  particleCount: 100,
+                  spread: 70,
+                  origin: { y: 0.6, x: 0.1 },
+                  colors: ["#ef4444", "#eab308", "#a855f7"],
+                });
+                confetti({
+                  particleCount: 100,
+                  spread: 70,
+                  origin: { y: 0.6, x: 0.9 },
+                  colors: ["#ef4444", "#eab308", "#a855f7"],
+                });
+              } else {
+                newVoteBtn.innerHTML = `⚠️ No se pudo votar`;
+                setTimeout(() => {
+                  newVoteBtn.innerHTML = `<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z"></path></svg> Votar Ahora`;
+                  newVoteBtn.className =
+                    "w-full md:w-auto px-8 py-4 bg-linear-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 rounded-lg text-xl font-bold text-white shadow-lg transition-all transform hover:scale-105 flex items-center justify-center gap-3";
+
+                  newVoteBtn.disabled = false;
+                  newVoteBtn.classList.remove(
+                    "cursor-not-allowed",
+                    "opacity-70"
+                  );
+                }, 2500);
+              }
+            } catch (e) {
+              newVoteBtn.innerHTML = `❌ Error`;
+              newVoteBtn.disabled = false;
+            }
+          });
+        }
       }
 
       detailName.textContent = nominee.name;
-      detailCreator.textContent = nominee.creator ? `Creado por: ${nominee.creator}` : "";
+      detailCreator.textContent = nominee.creator
+        ? `Creado por: ${nominee.creator}`
+        : "";
       detailDesc.textContent = nominee.description || "Sin descripción disponible.";
 
       detailImg.classList.add("hidden");
-      detailImg.classList.remove("cursor-zoom-in", "artwork-zoom-img", "artwork-fit-contain", "artwork-fit-cover");
+      detailImg.classList.remove(
+        "cursor-zoom-in",
+        "artwork-zoom-img",
+        "artwork-fit-contain",
+        "artwork-fit-cover"
+      );
       lastDetailImageSrc = "";
       lastIsArtwork = false;
-      audioOverlay.classList.add("hidden");
+      audioOverlay?.classList.add("hidden");
       detailVideo.classList.add("hidden");
-      audioVolumeControls.classList.add("hidden");
-      videoControls.classList.add("hidden");
+      audioVolumeControls?.classList.add("hidden");
+      videoControls?.classList.add("hidden");
       if (detailYoutube) detailYoutube.classList.add("hidden");
       if (mediaContainer) {
-        mediaContainer.classList.remove("artwork-detail-wrap", "aspect-[9/16]", "max-w-sm", "mx-auto", "aspect-video", "aspect-square");
+        mediaContainer.classList.remove(
+          "artwork-detail-wrap",
+          "aspect-[9/16]",
+          "max-w-sm",
+          "mx-auto",
+          "aspect-video",
+          "aspect-square"
+        );
       }
       if (artworkZoomHint) artworkZoomHint.classList.add("hidden");
 
       if (nominee.youtubeId) {
         if (mediaContainer) {
-            if (currentCategory.id === "7") {
-                mediaContainer.classList.add("aspect-[9/16]", "max-w-sm", "mx-auto");
-            } else {
-                mediaContainer.classList.add("aspect-video");
-            }
+          if (currentCategory.id === "7") {
+            mediaContainer.classList.add("aspect-[9/16]", "max-w-sm", "mx-auto");
+          } else {
+            mediaContainer.classList.add("aspect-video");
+          }
         }
         if (detailYoutube) {
-            detailYoutube.classList.remove("hidden");
-            detailYoutube.src = `https://www.youtube.com/embed/${nominee.youtubeId}?autoplay=1&rel=0&modestbranding=1&loop=1&playlist=${nominee.youtubeId}`;
+          detailYoutube.classList.remove("hidden");
+          detailYoutube.src = `https://www.youtube.com/embed/${nominee.youtubeId}?autoplay=1&rel=0&modestbranding=1&loop=1&playlist=${nominee.youtubeId}`;
         }
       } else if (nominee.audio) {
         if (mediaContainer) mediaContainer.classList.add("aspect-square");
-        let hdSrc = nominee.image || '/img/lag_uconstr_placeholder.png';
-        if (hdSrc.includes('imagekit')) hdSrc += '?tr=w-800,q-90,f-auto';
+        let hdSrc = nominee.image || "/img/lag_uconstr_placeholder.png";
+        if (hdSrc.includes("imagekit")) hdSrc += "?tr=w-800,q-90,f-auto";
         detailImg.src = hdSrc;
         detailImg.classList.remove("hidden");
         detailImg.classList.add("artwork-fit-cover");
-        audioOverlay.classList.remove("hidden");
-        audioVolumeControls.classList.remove("hidden");
+        audioOverlay?.classList.remove("hidden");
+        audioVolumeControls?.classList.remove("hidden");
         currentAudio = new Audio(nominee.audio);
-        if (audioVolumeSlider) currentAudio.volume = audioVolumeSlider.value;
+        if (audioVolumeSlider) currentAudio.volume = parseFloat(audioVolumeSlider.value);
         currentAudio.onended = () => {
-          if(iconPlay) iconPlay.classList.remove("hidden");
-          if(iconPause) iconPause.classList.add("hidden");
+          if (iconPlay) iconPlay.classList.remove("hidden");
+          if (iconPause) iconPause.classList.add("hidden");
         };
       } else if (nominee.video) {
         if (mediaContainer) mediaContainer.classList.add("aspect-video");
@@ -759,145 +1027,229 @@ import categories from "../data/categories.ts";
 
         detailVideo.classList.remove("hidden");
         detailVideo.src = nominee.video;
-        if (videoVolumeSlider) detailVideo.volume = videoVolumeSlider.value;
+        if (videoVolumeSlider) detailVideo.volume = parseFloat(videoVolumeSlider.value);
         detailVideo.load();
-        
         // VIDEO: Mostrar controles inicialmente
-        videoControls.classList.remove("hidden");
-        videoControls.classList.remove("opacity-0"); // Fix para que se vean al inicio
-        videoControls.classList.add("opacity-100");
-        
+        videoControls?.classList.remove("hidden");
+        videoControls?.classList.remove("opacity-0");
+        // Fix para que se vean al inicio
+        videoControls?.classList.add("opacity-100");
         if (videoProgress) videoProgress.value = 0;
         if (currentTimeSpan) currentTimeSpan.textContent = "0:00";
 
-        detailVideo.onwaiting = () => { if(mediaLoader) mediaLoader.classList.remove("hidden"); };
-        detailVideo.onplaying = () => { if(mediaLoader) mediaLoader.classList.add("hidden"); };
-        detailVideo.oncanplay = () => { if(mediaLoader) mediaLoader.classList.add("hidden"); };
-        detailVideo.onloadedmetadata = () => { if (totalDurationSpan) totalDurationSpan.textContent = formatTime(detailVideo.duration); };
-        detailVideo.ontimeupdate = () => { if (videoProgress) videoProgress.value = (detailVideo.currentTime / detailVideo.duration) * 100; if (currentTimeSpan) currentTimeSpan.textContent = formatTime(detailVideo.currentTime); };
-        detailVideo.onended = () => { 
-            if(videoIconPlay) videoIconPlay.classList.remove("hidden"); 
-            if(videoIconPause) videoIconPause.classList.add("hidden"); 
-            detailVideo.currentTime = 0; 
-            // Mostrar controles al terminar
-            videoControls.classList.remove("opacity-0");
-            videoControls.classList.add("opacity-100");
+        detailVideo.onwaiting = () => {
+          if (mediaLoader) mediaLoader.classList.remove("hidden");
+        };
+        detailVideo.onplaying = () => {
+          if (mediaLoader) mediaLoader.classList.add("hidden");
+        };
+        detailVideo.oncanplay = () => {
+          if (mediaLoader) mediaLoader.classList.add("hidden");
+        };
+        detailVideo.onloadedmetadata = () => {
+          if (totalDurationSpan)
+            totalDurationSpan.textContent = formatTime(detailVideo.duration);
+        };
+        detailVideo.ontimeupdate = () => {
+          if (videoProgress)
+            videoProgress.value = (detailVideo.currentTime / detailVideo.duration) * 100;
+          if (currentTimeSpan)
+            currentTimeSpan.textContent = formatTime(detailVideo.currentTime);
+        };
+        detailVideo.onended = () => {
+          if (videoIconPlay) videoIconPlay.classList.remove("hidden");
+          if (videoIconPause) videoIconPause.classList.add("hidden");
+          detailVideo.currentTime = 0;
+          // Mostrar controles al terminar
+          videoControls?.classList.remove("opacity-0");
+          videoControls?.classList.add("opacity-100");
         };
       } else {
         if (mediaContainer) mediaContainer.classList.add("aspect-square");
         let hdSrc = nominee.image;
-        if (!hdSrc && nominee.video && nominee.video.includes('cloudinary')) {
-           hdSrc = nominee.video.replace(/\.[^/.]+$/, ".jpg");
+        if (!hdSrc && nominee.video && nominee.video.includes("cloudinary")) {
+          hdSrc = nominee.video.replace(/\.[^/.]+$/, ".jpg");
         }
-        if (!hdSrc) hdSrc = '/img/lag_uconstr_placeholder.png';
-        if (hdSrc.includes('imagekit')) hdSrc += '?tr=w-800,q-90,f-auto';
+        if (!hdSrc) hdSrc = "/img/lag_uconstr_placeholder.png";
+        if (hdSrc.includes("imagekit")) hdSrc += "?tr=w-800,q-90,f-auto";
         detailImg.src = hdSrc;
         detailImg.classList.remove("hidden");
         lastDetailImageSrc = hdSrc;
         lastIsArtwork = isArtworkCategory;
         if (isArtworkCategory) {
-          detailImg.classList.add("artwork-fit-contain", "cursor-zoom-in", "artwork-zoom-img");
+          detailImg.classList.add(
+            "artwork-fit-contain",
+            "cursor-zoom-in",
+            "artwork-zoom-img"
+          );
           if (mediaContainer) mediaContainer.classList.add("artwork-detail-wrap");
           if (artworkZoomHint) artworkZoomHint.classList.remove("hidden");
         } else {
           detailImg.classList.add("artwork-fit-cover");
-        }     
+        }
       }
 
-      nomineeView.classList.add("opacity-0");
+      nomineeView?.classList.add("opacity-0");
       setTimeout(() => {
-        nomineeView.classList.add("hidden");
-        detailView.classList.remove("hidden");
-        setTimeout(() => detailView.classList.remove("opacity-0"), 50);
+        nomineeView?.classList.add("hidden");
+        detailView?.classList.remove("hidden");
+        setTimeout(() => detailView?.classList.remove("opacity-0"), 50);
       }, 300);
     };
 
     // Listeners
     if (categoryGrid) {
       categoryGrid.addEventListener("click", (e) => {
-        const card = e.target.closest("[data-category-id]");
+        const card = e.target instanceof Element ? e.target.closest("[data-category-id]") : null;
         if (!card) return;
-        const categoryId = card.dataset.categoryId;
+        const categoryId = card.getAttribute("data-category-id");
+        if (!categoryId) return;
         const idx = categories.findIndex((c) => c.id === categoryId);
         if (idx !== -1) {
           showCategoryDetails(idx);
-          categoryView.classList.add("opacity-0");
+          categoryView?.classList.add("opacity-0");
+
           setTimeout(() => {
-            categoryView.classList.add("hidden");
-            nomineeView.classList.remove("hidden");
-            setTimeout(() => nomineeView.classList.remove("opacity-0"), 50);
+            categoryView?.classList.add("hidden");
+            nomineeView?.classList.remove("hidden");
+            setTimeout(() => nomineeView?.classList.remove("opacity-0"), 50);
           }, 300);
         }
       });
     }
 
-    if (backToCategoriesBtn) backToCategoriesBtn.addEventListener("click", () => { stopAllMedia(); nomineeView.classList.add("opacity-0"); setTimeout(() => { nomineeView.classList.add("hidden"); categoryView.classList.remove("hidden"); setTimeout(() => categoryView.classList.remove("opacity-0"), 50); }, 300); });
-    if (backToNomineesBtn) backToNomineesBtn.addEventListener("click", () => { stopAllMedia(); detailView.classList.add("opacity-0"); setTimeout(() => { detailView.classList.add("hidden"); nomineeView.classList.remove("hidden"); setTimeout(() => nomineeView.classList.remove("opacity-0"), 50); }, 300); });
-    
-    if (playBtn) { playBtn.addEventListener("click", (e) => { e.stopPropagation(); if (!currentAudio) return; if (currentAudio.paused) { currentAudio.play(); if(iconPlay) iconPlay.classList.add("hidden"); if(iconPause) iconPause.classList.remove("hidden"); } else { currentAudio.pause(); if(iconPlay) iconPlay.classList.remove("hidden"); if(iconPause) iconPause.classList.add("hidden"); } }); }
-    if (audioVolumeSlider) { audioVolumeSlider.addEventListener("input", (e) => { if (currentAudio) currentAudio.volume = e.target.value; }); }
-    
-    // Listeners VIDEO
-    if (videoPlayPauseBtn) { 
-        videoPlayPauseBtn.addEventListener("click", toggleVideoPlay); 
-    }
-    if (videoProgress) { videoProgress.addEventListener("input", (e) => { if (detailVideo) { const seekTime = (e.target.value / 100) * detailVideo.duration; detailVideo.currentTime = seekTime; } }); }
-    if (videoVolumeSlider) { videoVolumeSlider.addEventListener("input", (e) => { if (detailVideo) detailVideo.volume = e.target.value; }); }
-    const toggleFullScreen = () => {
-        const doc = document;
-        const container = mediaContainer;
-        const video = detailVideo;
-
-        // Detectar si ya estamos en fullscreen (soporte para varios navegadores)
-        const isFullScreen = doc.fullscreenElement || 
-                             doc.webkitFullscreenElement || 
-                             doc.mozFullScreenElement || 
-                             doc.msFullscreenElement;
-
-        if (!isFullScreen) {
-            // INTENTAR ENTRAR A FULLSCREEN
-            if (container.requestFullscreen) {
-                container.requestFullscreen().catch(err => {
-                    console.warn("Error estándar fullscreen:", err);
-                    // Fallback si falla el contenedor (común en iOS): intentar con el video directo
-                    if (video && video.webkitEnterFullscreen) video.webkitEnterFullscreen();
-                });
-            } else if (container.webkitRequestFullscreen) {
-                container.webkitRequestFullscreen(); // Safari/Chrome antiguos
-            } else if (container.mozRequestFullScreen) {
-                container.mozRequestFullScreen(); // Firefox
-            } else if (container.msRequestFullscreen) {
-                container.msRequestFullscreen(); // IE/Edge
-            } else if (video && video.webkitEnterFullscreen) {
-                // FALLBACK CRÍTICO PARA IPHONE (iOS)
-                // En iPhone, solo el elemento <video> puede ir a pantalla completa.
-                // Esto abrirá el reproductor nativo de iOS.
-                video.webkitEnterFullscreen();
-            }
+    if (backToCategoriesBtn)
+      backToCategoriesBtn.addEventListener("click", () => {
+        stopAllMedia();
+        nomineeView?.classList.add("opacity-0");
+        setTimeout(() => {
+          nomineeView?.classList.add("hidden");
+          categoryView?.classList.remove("hidden");
+          setTimeout(() => categoryView?.classList.remove("opacity-0"), 50);
+        }, 300);
+      });
+    if (backToNomineesBtn)
+      backToNomineesBtn.addEventListener("click", () => {
+        stopAllMedia();
+        detailView?.classList.add("opacity-0");
+        setTimeout(() => {
+          detailView?.classList.add("hidden");
+          nomineeView?.classList.remove("hidden");
+          setTimeout(() => nomineeView?.classList.remove("opacity-0"), 50);
+        }, 300);
+      });
+    if (playBtn) {
+      playBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (!currentAudio) return;
+        if (currentAudio.paused) {
+          currentAudio.play();
+          if (iconPlay) iconPlay.classList.add("hidden");
+          if (iconPause) iconPause.classList.remove("hidden");
         } else {
-            // SALIR DE FULLSCREEN
-            if (doc.exitFullscreen) {
-                doc.exitFullscreen();
-            } else if (doc.webkitExitFullscreen) {
-                doc.webkitExitFullscreen();
-            } else if (doc.mozCancelFullScreen) {
-                doc.mozCancelFullScreen();
-            } else if (doc.msExitFullscreen) {
-                doc.msExitFullscreen();
-            }
+          currentAudio.pause();
+          if (iconPlay) iconPlay.classList.remove("hidden");
+          if (iconPause) iconPause.classList.add("hidden");
         }
-    };
+      });
+    }
+    if (audioVolumeSlider) {
+      audioVolumeSlider.addEventListener("input", (e) => {
+        if (currentAudio)
+          currentAudio.volume = parseFloat((e.target as HTMLInputElement).value);
+      });
+    }
 
-    if (fullscreenBtn && mediaContainer) { 
-        fullscreenBtn.addEventListener("click", (e) => { 
-            // IMPORTANTE: Detener la propagación evita que el click en el botón 
-            // también dispare el evento del contenedor que oculta/muestra los controles.
-            e.stopPropagation(); 
-            toggleFullScreen(); 
-        }); 
+    // Listeners VIDEO
+    if (videoPlayPauseBtn) {
+      videoPlayPauseBtn.addEventListener("click", toggleVideoPlay);
+    }
+    if (videoProgress) {
+      videoProgress.addEventListener("input", (e) => {
+        if (detailVideo) {
+          const seekTime = (parseFloat((e.target as HTMLInputElement).value) / 100) * detailVideo.duration;
+          detailVideo.currentTime = seekTime;
+        }
+      });
+    }
+    if (videoVolumeSlider) {
+      videoVolumeSlider.addEventListener("input", (e) => {
+        if (detailVideo)
+          detailVideo.volume = parseFloat((e.target as HTMLInputElement).value);
+      });
+    }
+    const toggleFullScreen = () => {
+      const doc = document;
+      const container = mediaContainer;
+      const video = detailVideo;
+
+      // Detectar si ya estamos en fullscreen (soporte para varios navegadores)
+      const isFullScreen =
+        doc.fullscreenElement ||
+        doc.webkitFullscreenElement ||
+        doc.mozFullScreenElement ||
+        doc.msFullscreenElement;
+
+      if (!isFullScreen && container) {
+        // INTENTAR ENTRAR A FULLSCREEN
+        if (container.requestFullscreen) {
+          container.requestFullscreen().catch((err) => {
+            console.warn("Error estándar fullscreen:", err);
+            // Fallback si falla el contenedor (común en iOS): intentar con el video directo
+            if (video && video.webkitEnterFullscreen) video.webkitEnterFullscreen();
+          });
+        } else if (container.webkitRequestFullscreen) {
+          container.webkitRequestFullscreen();
+          // Safari/Chrome antiguos
+        } else if (container.mozRequestFullScreen) {
+          container.mozRequestFullScreen();
+          // Firefox
+        } else if (container.msRequestFullscreen) {
+          container.msRequestFullscreen();
+          // IE/Edge
+        } else if (video && video.webkitEnterFullscreen) {
+          // FALLBACK CRÍTICO PARA IPHONE (iOS)
+          // En iPhone, solo el elemento <video> puede ir a pantalla completa.
+          // Esto abrirá el reproductor nativo de iOS.
+          video.webkitEnterFullscreen();
+        }
+      } else {
+        // SALIR DE FULLSCREEN
+        if (doc.exitFullscreen) {
+          doc.exitFullscreen();
+        } else if (doc.webkitExitFullscreen) {
+          doc.webkitExitFullscreen();
+        } else if (doc.mozCancelFullScreen) {
+          doc.mozCancelFullScreen();
+        } else if (doc.msExitFullscreen) {
+          doc.msExitFullscreen();
+        }
+      }
+    };
+    if (fullscreenBtn && mediaContainer) {
+      fullscreenBtn.addEventListener("click", (e) => {
+        // IMPORTANTE: Detener la propagación evita que el click en el botón
+        // también dispare el evento del contenedor que oculta/muestra los controles.
+        e.stopPropagation();
+        toggleFullScreen();
+      });
     }
     // Navegación
-    if (prevBtn) {prevBtn.addEventListener("click", () => {const newIndex = (currentCategoryIndex - 1 + categories.length) % categories.length; showCategoryDetails(newIndex, "prev");});}
-    if (nextBtn) {nextBtn.addEventListener("click", () => {const newIndex = (currentCategoryIndex + 1) % categories.length; showCategoryDetails(newIndex, "next");});}
+    if (prevBtn) {
+      prevBtn.addEventListener("click", () => {
+        const newIndex =
+          (currentCategoryIndex - 1 + categories.length) % categories.length;
+        showCategoryDetails(newIndex, "prev");
+      });
+    }
+    if (nextBtn) {
+      nextBtn.addEventListener("click", () => {
+        const newIndex = (currentCategoryIndex + 1) % categories.length;
+        showCategoryDetails(newIndex, "next");
+      });
+    }
+
+    // Aseguramos la carga inicial del estado
+    loadStreamerModeState();
   });
 </script>
