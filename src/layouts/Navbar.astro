@@ -117,15 +117,13 @@ const links = [
   import { supabase } from '../lib/supabase';
   import { $currentUser } from '../stores/authStore';
 
-  // Referencias al DOM
-  const btnLoginLink = document.getElementById('btn-login-link');
-  const userProfile = document.getElementById('user-profile');
-  const userAvatar = document.getElementById('user-avatar') as HTMLImageElement;
-  const btnLogout = document.getElementById('btn-logout');
-  const mobileLoginBtn = document.getElementById('mobile-login-btn');
-
   // Función Central para Actualizar la UI
   function updateUI(user: any) {
+      const btnLoginLink = document.getElementById('btn-login-link');
+      const userProfile = document.getElementById('user-profile');
+      const userAvatar = document.getElementById('user-avatar') as HTMLImageElement;
+      const mobileLoginBtn = document.getElementById('mobile-login-btn');
+      
       if (user) {
           // 🟢 ESTADO: LOGUEADO
           if (btnLoginLink) btnLoginLink.classList.add('hidden');
@@ -160,6 +158,7 @@ const links = [
   });
 
   // Lógica de Logout
+  const btnLogout = document.getElementById('btn-logout');
   if (btnLogout) {
       btnLogout.addEventListener('click', async () => {
           await supabase.auth.signOut();
@@ -181,12 +180,14 @@ const links = [
       });
   }
 
-  // Menú Móvil Toggle
-  const menuToggle = document.getElementById('menu-toggle');
-  const mobileMenu = document.getElementById('mobile-menu');
-  if (menuToggle && mobileMenu) {
-    menuToggle.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
+  // FIX: Menú Móvil Toggle - Asegura que el listener se adjunte después de cada navegación
+  document.addEventListener('astro:page-load', () => {
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        if (menuToggle && mobileMenu) {
+            menuToggle.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
     });
-  }
 </script>
