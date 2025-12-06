@@ -7,7 +7,16 @@ import categories from "../data/categories.ts";
 
 <Layout title="Categorías - LAGAWARDS">
   <Navbar />
-  <main id="main-content-container" class="pt-24 text-white min-h-screen">
+  <main id="main-content-container" class="pt-24 text-white min-h-screen relative">
+    
+    <div id="streamer-mode-floating" class="fixed bottom-6 left-6 z-50 flex items-center gap-3 p-3 bg-black/80 backdrop-blur-xl rounded-full border border-white/10 shadow-[0_0_20px_rgba(0,0,0,0.5)] transition-transform hover:scale-105 select-none animate-fade-in-up">
+        <span class="text-[10px] sm:text-xs font-bold text-gray-300 ml-1 uppercase tracking-wider">Modo Streamer</span>
+        <label class="relative inline-flex items-center cursor-pointer group">
+            <input type="checkbox" value="" id="streamer-mode-toggle" class="sr-only peer" />
+            <div class="w-9 h-5 sm:w-11 sm:h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 sm:after:h-5 sm:after:w-5 after:transition-all border-gray-600 peer-checked:bg-purple-600"></div>
+        </label>
+    </div>
+
     <div class="container mx-auto px-6 py-16">
       <div id="category-view" class="transition-opacity duration-300">
         <div class="text-center mb-16">
@@ -20,15 +29,6 @@ import categories from "../data/categories.ts";
           <p class="text-xl text-gray-300 mt-4 max-w-3xl mx-auto">
             Selecciona una categoría para ver los nominados.
           </p>
-
-          <div class="mt-8 flex items-center justify-center gap-3 p-3 bg-black/60 backdrop-blur-md rounded-full max-w-max mx-auto border border-white/10 shadow-lg select-none">
-            <label class="relative inline-flex items-center cursor-pointer group">
-                <input type="checkbox" value="" id="streamer-mode-toggle" class="sr-only peer" />
-                <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all border-gray-600 peer-checked:bg-purple-600"></div>
-                <span class="ms-3 text-sm font-bold text-gray-300 group-hover:text-white transition-colors">Modo Streamer (Ocultar Votos)</span>
-            </label>
-          </div>
-
         </div>
         <div
           id="category-grid"
@@ -240,10 +240,11 @@ import categories from "../data/categories.ts";
                                 <span id="vote-count-number">0</span> Votos en esta categoría
                             </p>
                         </div>
-                        
+
                         <div id="streamer-mode-feedback" class="hidden pt-6">
-                            <p class="text-gray-500 font-mono text-sm italic">
-                                👁️ Modo Streamer Activo (Voto oculto)
+                            <p class="text-gray-500 font-mono text-sm italic flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></span>
+                                Modo Streamer Activo (Voto Oculto)
                             </p>
                         </div>
 
@@ -459,15 +460,21 @@ import categories from "../data/categories.ts";
     }
   }
 
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fade-in-up {
+    animation: fadeInUp 0.5s ease-out forwards;
+  }
+
   /* --- MODO STREAMER (CSS GLOBAL) --- */
-  /* Usamos :global() para que afecte a elementos creados dinámicamente con JS */
-  
-  /* Ocultar el indicador de check verde en las miniaturas */
+  /* Ocultar el indicador de check verde en las miniaturas (GRID) */
   :global(#main-content-container.streamer-mode-active .nominee-vote-status) {
     display: none !important;
   }
 
-  /* Ocultar el bloque de botones de voto en el detalle */
+  /* Ocultar el bloque de botones de voto en el detalle (DETALLE) */
   :global(#main-content-container.streamer-mode-active #vote-controls-container) {
     display: none !important;
   }
@@ -489,7 +496,7 @@ import categories from "../data/categories.ts";
   import confetti from "canvas-confetti";
 
   document.addEventListener("astro:page-load", () => {
-    // --- NUEVAS REFERENCIAS Y ESTADO PARA MODO STREAMER ---
+    // --- REFERENCIAS MODO STREAMER ---
     const streamerModeToggle = document.getElementById(
       "streamer-mode-toggle"
     ) as HTMLInputElement;
@@ -498,8 +505,10 @@ import categories from "../data/categories.ts";
     );
     const STREAMER_MODE_KEY = "lag_streamer_mode";
 
+    // Función para aplicar el estado
     const loadStreamerModeState = () => {
       const isActive = localStorage.getItem(STREAMER_MODE_KEY) === "true";
+      
       if (mainContentContainer) {
         if (isActive) {
           mainContentContainer.classList.add("streamer-mode-active");
@@ -660,7 +669,7 @@ import categories from "../data/categories.ts";
 
     // --- CARGA DE DATOS ---
     const loadData = async () => {
-        // Aseguramos que el modo streamer se carga antes de obtener datos
+        // Carga inicial del estado
         loadStreamerModeState();
 
         setTimeout(async () => {
@@ -671,16 +680,16 @@ import categories from "../data/categories.ts";
     loadData();
     $currentUser.subscribe(() => loadData());
 
-    // --- NEW: Toggle Listener for Streamer Mode ---
+    // --- LISTENER DEL SWITCH FLOTANTE ---
     if (streamerModeToggle) {
         streamerModeToggle.addEventListener('change', (e) => {
             const isChecked = (e.target as HTMLInputElement).checked;
             localStorage.setItem(STREAMER_MODE_KEY, isChecked ? 'true' : 'false');
             loadStreamerModeState();
             
-            // Forzamos un re-render si se está en la vista de nominados para que el checkmark se oculte/muestre
+            // Si estamos en la vista de nominados, forzamos re-render para ocultar/mostrar los checks al instante
             if (!nomineeView?.classList.contains("hidden")) {
-                showCategoryDetails(currentCategoryIndex, 'none'); // Re-render sin animación
+                showCategoryDetails(currentCategoryIndex, 'none'); 
             }
         });
     }
@@ -703,18 +712,17 @@ import categories from "../data/categories.ts";
       }
       if (mediaLoader) mediaLoader.classList.add("hidden");
 
-      // Reset de iconos y controles
       if (iconPlay) iconPlay.classList.remove("hidden");
       if (iconPause) iconPause.classList.add("hidden");
       if (videoIconPlay) videoIconPlay.classList.remove("hidden");
       if (videoIconPause) videoIconPause.classList.add("hidden");
       if (videoControls) {
         videoControls.classList.add("hidden");
-        videoControls.classList.remove("opacity-100"); // Resetear visibilidad forzada
+        videoControls.classList.remove("opacity-100"); 
         videoControls.classList.add("opacity-0");
       }
     };
-    // --- FUNCIONES NUEVAS PARA VIDEO MÓVIL ---
+    // --- VIDEO MOBILE TOGGLE ---
     const toggleVideoPlay = () => {
       if (!detailVideo) return;
       if (detailVideo.paused) {
@@ -731,21 +739,16 @@ import categories from "../data/categories.ts";
         }
       }
     };
-    // --- INTERACCIÓN MÓVIL EN EL CONTENEDOR DE MEDIOS ---
     if (mediaContainer) {
       mediaContainer.addEventListener("click", (e) => {
-        // Si estamos en modo video
         if (!detailVideo.classList.contains("hidden")) {
-          // Si el click fue en los controles, no hacemos nada extra
           if (e.target instanceof Element && e.target.closest("#video-controls"))
             return;
 
-          // Si fue en el video, toggleamos la visibilidad de los controles
           if (videoControls?.classList.contains("opacity-0")) {
             videoControls.classList.remove("opacity-0");
             videoControls.classList.add("opacity-100");
           } else if (videoControls) {
-            // Si ya están visibles -> Toggle Play.
             videoControls.classList.remove("opacity-100");
             videoControls.classList.add("opacity-0");
           }
@@ -832,10 +835,10 @@ import categories from "../data/categories.ts";
             thumbSrc += "?tr=w-400,q-80,f-auto";
           }
 
-          // --- INDICADOR DE VOTO (se genera dinámicamente) ---
+          // INDICADOR DE VOTO (Generación dinámica)
           const votedNomineeInThisCategory = userVotes[category.id];
           const isMyPick = votedNomineeInThisCategory === nominee.name;
-          // Añadimos la clase nominee-vote-status que ocultaremos con CSS Global si es necesario
+          // NOTA: La clase 'nominee-vote-status' es la clave para que el CSS global la oculte
           const voteStatusHTML = isMyPick
             ? `<div class="nominee-vote-status absolute top-2 right-2 z-30 p-2 bg-green-600 rounded-full shadow-lg text-sm transition-all transform group-hover:scale-110" title="Tu voto!"><svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg></div>`
             : "";
@@ -872,7 +875,6 @@ import categories from "../data/categories.ts";
       let currentTotal = categoryCounts[catKey] || 0;
       if (voteCountNumber) voteCountNumber.textContent = currentTotal.toString();
 
-      // Lógica de botón de voto
       const voteBtn = document.getElementById(
         "detail-vote-btn"
       ) as HTMLButtonElement | null;
@@ -885,7 +887,6 @@ import categories from "../data/categories.ts";
         const newVoteBtn = voteBtn.cloneNode(true) as HTMLButtonElement;
         voteBtn.parentNode?.replaceChild(newVoteBtn, voteBtn);
 
-        // Re-evaluamos el texto del botón
         if (hasVoted) {
           if (isMyPick) {
             newVoteBtn.innerHTML = `✅ Tu Voto: ${nominee.name}`;
@@ -1029,10 +1030,9 @@ import categories from "../data/categories.ts";
         detailVideo.src = nominee.video;
         if (videoVolumeSlider) detailVideo.volume = parseFloat(videoVolumeSlider.value);
         detailVideo.load();
-        // VIDEO: Mostrar controles inicialmente
+        
         videoControls?.classList.remove("hidden");
         videoControls?.classList.remove("opacity-0");
-        // Fix para que se vean al inicio
         videoControls?.classList.add("opacity-100");
         if (videoProgress) videoProgress.value = 0;
         if (currentTimeSpan) currentTimeSpan.textContent = "0:00";
@@ -1060,7 +1060,6 @@ import categories from "../data/categories.ts";
           if (videoIconPlay) videoIconPlay.classList.remove("hidden");
           if (videoIconPause) videoIconPause.classList.add("hidden");
           detailVideo.currentTime = 0;
-          // Mostrar controles al terminar
           videoControls?.classList.remove("opacity-0");
           videoControls?.classList.add("opacity-100");
         };
@@ -1097,7 +1096,6 @@ import categories from "../data/categories.ts";
       }, 300);
     };
 
-    // Listeners
     if (categoryGrid) {
       categoryGrid.addEventListener("click", (e) => {
         const card = e.target instanceof Element ? e.target.closest("[data-category-id]") : null;
@@ -1160,7 +1158,6 @@ import categories from "../data/categories.ts";
       });
     }
 
-    // Listeners VIDEO
     if (videoPlayPauseBtn) {
       videoPlayPauseBtn.addEventListener("click", toggleVideoPlay);
     }
@@ -1183,7 +1180,6 @@ import categories from "../data/categories.ts";
       const container = mediaContainer;
       const video = detailVideo;
 
-      // Detectar si ya estamos en fullscreen (soporte para varios navegadores)
       const isFullScreen =
         doc.fullscreenElement ||
         doc.webkitFullscreenElement ||
@@ -1191,30 +1187,21 @@ import categories from "../data/categories.ts";
         doc.msFullscreenElement;
 
       if (!isFullScreen && container) {
-        // INTENTAR ENTRAR A FULLSCREEN
         if (container.requestFullscreen) {
           container.requestFullscreen().catch((err) => {
             console.warn("Error estándar fullscreen:", err);
-            // Fallback si falla el contenedor (común en iOS): intentar con el video directo
             if (video && video.webkitEnterFullscreen) video.webkitEnterFullscreen();
           });
         } else if (container.webkitRequestFullscreen) {
           container.webkitRequestFullscreen();
-          // Safari/Chrome antiguos
         } else if (container.mozRequestFullScreen) {
           container.mozRequestFullScreen();
-          // Firefox
         } else if (container.msRequestFullscreen) {
           container.msRequestFullscreen();
-          // IE/Edge
         } else if (video && video.webkitEnterFullscreen) {
-          // FALLBACK CRÍTICO PARA IPHONE (iOS)
-          // En iPhone, solo el elemento <video> puede ir a pantalla completa.
-          // Esto abrirá el reproductor nativo de iOS.
           video.webkitEnterFullscreen();
         }
       } else {
-        // SALIR DE FULLSCREEN
         if (doc.exitFullscreen) {
           doc.exitFullscreen();
         } else if (doc.webkitExitFullscreen) {
@@ -1228,13 +1215,10 @@ import categories from "../data/categories.ts";
     };
     if (fullscreenBtn && mediaContainer) {
       fullscreenBtn.addEventListener("click", (e) => {
-        // IMPORTANTE: Detener la propagación evita que el click en el botón
-        // también dispare el evento del contenedor que oculta/muestra los controles.
         e.stopPropagation();
         toggleFullScreen();
       });
     }
-    // Navegación
     if (prevBtn) {
       prevBtn.addEventListener("click", () => {
         const newIndex =
@@ -1249,7 +1233,6 @@ import categories from "../data/categories.ts";
       });
     }
 
-    // Aseguramos la carga inicial del estado
     loadStreamerModeState();
   });
 </script>
