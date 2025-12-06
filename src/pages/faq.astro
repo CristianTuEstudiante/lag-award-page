@@ -18,7 +18,11 @@ const faqs = [
   },
   {
     q: "¿Dónde veo la gala final?",
-    a: "Se transmitirá en vivo en nuestro canal de YouTube y Twitch. Puedes ver el enlace directo en la sección 'EN VIVO' del menú."
+    a: "Se transmitirá en vivo en nuestro canal de YouTube. Puedes ver el enlace directo en la sección <a href='/premiacion' class='text-purple-400 hover:text-purple-300 underline font-semibold transition-colors'>Premiacion</a> del menú."
+  },
+  {
+    q: "¿Dónde contacto o reporto un error de la pagina?",
+    a: "Puedes contactarnos o reportar errores a través del discord de la comunidad: <a href='https://discord.gg/YWJZBAUqQK' target='_blank' rel='noopener noreferrer' class=' text-purple-400 hover:text-purple-300 underline font-semibold transition-colors'>TeamLag Discord</a>"
   }
 ];
 ---
@@ -38,9 +42,13 @@ const faqs = [
               {item.q}
               <span class="transition-transform group-open:rotate-180 text-purple-500">▼</span>
             </summary>
-            <div class="px-6 pb-6 text-gray-400 leading-relaxed border-t border-white/5 pt-4">
-              {item.a}
-            </div>
+            
+            {/* CAMBIO IMPORTANTE: Usamos set:html para renderizar los enlaces dentro del texto */}
+            <div 
+              class="px-6 pb-6 text-gray-400 leading-relaxed border-t border-white/5 pt-4"
+              set:html={item.a}
+            />
+            
           </details>
         ))}
       </div>
