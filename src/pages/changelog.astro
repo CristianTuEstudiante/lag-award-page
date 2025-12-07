@@ -1,0 +1,301 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../layouts/Navbar.astro';
+import Footer from '../layouts/Footer.astro';
+
+// --- ARQUITECTURA & STACK ---
+
+const techStack = [
+  {
+    category: "Frontend Core",
+    description: "Capa de presentación y renderizado",
+    items: [
+      { name: "Astro 5.0", detail: "Islands Architecture & Server-First Rendering" },
+      { name: "TypeScript", detail: "Strict typing & Type safety" },
+      { name: "Tailwind CSS 4", detail: "Utility-first styling con motor Oxide" }
+    ]
+  },
+  {
+    category: "Backend & Data",
+    description: "Persistencia, autenticación y lógica de servidor",
+    items: [
+      { name: "Supabase", detail: "PostgreSQL Database & Auth Management" },
+      { name: "NanoStores", detail: "Atomic State Management" },
+      { name: "Edge Functions", detail: "Serverless compute (Vercel)" }
+    ]
+  },
+  {
+    category: "Integrations",
+    description: "Servicios de terceros y APIs",
+    items: [
+      { name: "Google Gemini AI", detail: "Procesamiento de lenguaje natural (Chatbot)" },
+      { name: "Cloudinary", detail: "Object Storage para assets multimedia" },
+      { name: "Google OAuth", detail: "Protocolo de autenticación segura" }
+    ]
+  }
+];
+
+// --- RELEASE NOTES / CHANGELOG ---
+const versions = [
+
+  {
+    version: "v1.0.1",
+    date: "2025-12-03",
+    label: "Patch Release",
+    statusColor: "bg-green-500/10 text-green-400 border-green-500/20",
+    summary: "Lanzamiento oficial de la plataforma de producción.",
+    changes: [
+      { type: "feat", text: "Nuevo boton emergente \"Modo Streamer\" para los votos anonimos en Categoria" },
+      { type: "perf", text: "Optimización de carga de imágenes (Lazy Loading & WebP)." },
+      { type: "fix", text: "Corrección de errores menores en la interfaz de usuario." }
+    ]
+  },
+  {
+    version: "v1.0",
+    date: "2025-12-03",
+    label: "Stable Release",
+    statusColor: "bg-green-500/10 text-green-400 border-green-500/20",
+    summary: "Lanzamiento oficial de la plataforma de producción.",
+    changes: [
+      { type: "ui", text: "Diseño responsivo final y optimización de assets." },
+      { type: "fix", text: "Mejora ya arreglo del reproductor de video para mobiles" },
+      { type: "feat", text: "Seccion \"Historia\" añadida y completada" },
+      { type: "feat", text: "Integración completa del asistente virtual (LagBot)." },
+      { type: "feat", text: "Transicion entre paginas" },
+      { type: "security", text: "Implementación de Row Level Security (RLS) en base de datos." },
+      { type: "perf", text: "Mejoras en el rendimiento del frontend y tiempos de carga." },
+
+
+    ]
+  },
+  {
+    version: "v0.5",
+    date: "2025-11-26",
+    label: "Beta Stage",
+    statusColor: "bg-blue-500/10 text-blue-400 border-blue-500/20",
+    summary: "Fase de pruebas y estabilización de características principales.",
+    changes: [
+      { type: "feat", text: "Sistema de votación transaccional con validación de usuario único." },
+      { type: "feat", text: "Implementación de sistema de votación con validación de usuario único." },
+      { type: "feat", text: "Panel de administración en tiempo real con métricas" },
+      { type: "fix", text: "Autenticación OAuth." },
+      { type: "ui", text: "Ajustes en la interfaz de usuario basados en feedback." },
+      { type: "security", text: "Implementación de Row Level Security (RLS) en base de datos." },
+      { type: "refactor", text: "Migración de estado local a NanoStores para persistencia de sesión." },
+      { type: "feat", text: "Integración inicial del asistente virtual (LagBot)." },
+      { type: "ui", text: "Diseño responsivo y optimización de assets." },
+      { type: "feat", text: "Panel de administración en tiempo real con métricas" },
+    ]
+  },
+  {
+    version: "v0.1",
+    date: "2025-11-04",
+    label: "Creación del Proyecto",
+    statusColor: "bg-gray-500/10 text-gray-400 border-gray-500/20",
+    summary: "Estructura inicial del proyecto y configuración del entorno de desarrollo.",
+    changes: [
+      { type: "init", text: "Configuración inicial de Astro y Tailwind CSS." },
+      { type: "init", text: "Definición de plugins y configuración básica." },
+      { type: "chore", text: "Definición de modelos de datos y esquemas." },
+      { type: "ui", text: "Prototipado de componentes base (Layouts, Cards)." },
+      { type: "ui", text: "Pagina Main estructurada" }
+    ]
+  }
+];
+---
+
+<Layout title="Changelog & Dev Team - LAG AWARDS" description="Documentación técnica y equipo de desarrollo de los LAG Awards.">
+  <Navbar />
+  
+  <main class="pt-32 pb-20 min-h-screen bg-[#050505] text-white">
+    <div class="container mx-auto px-6 max-w-6xl">
+      
+      <div class="border-b border-white/10 pb-12 mb-16">
+        <h1 class="text-4xl md:text-5xl font-bold font-orbitron mb-4 text-white tracking-tight">
+          Registro de <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-500">Desarrollo</span>
+        </h1>
+        <p class="text-gray-400 max-w-2xl text-lg font-light">
+          Documentación técnica sobre la arquitectura de la plataforma, stack tecnológico y el historial detallado de actualizaciones.
+        </p>
+      </div>
+
+      <section class="mb-32">
+        <div class="flex items-center gap-3 mb-10 px-2">
+          <span class="text-purple-500 text-xl">⚡</span>
+          <h2 class="text-2xl font-bold font-orbitron text-white">Core Architecture</h2>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {techStack.map((category) => (
+            <div class="bg-[#0f0f0f] border border-white/10 rounded-2xl p-8 hover:border-white/20 transition-colors duration-300 relative group h-full">
+              <div class="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl"></div>
+              <h3 class="text-xl font-bold text-white mb-2 font-orbitron relative z-10 uppercase">{category.category}</h3>
+              <p class="text-xs text-gray-500 mb-6 uppercase tracking-wider relative z-10">{category.description}</p>
+              
+              <ul class="space-y-4 relative z-10">
+                {category.items.map((item) => (
+                  <li class="flex flex-col border-l-2 border-white/5 pl-4 hover:border-purple-500/50 transition-colors">
+                    <span class="font-mono text-sm text-purple-300 font-bold">{item.name}</span>
+                    <span class="text-sm text-gray-400 mt-1">{item.detail}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+        </section>
+
+      <section class="mb-32 relative">
+        <div class="absolute inset-0 bg-gradient-to-b from-purple-900/5 via-transparent to-transparent -z-10 blur-3xl"></div>
+        
+        <div class="flex items-center gap-3 mb-12 px-2">
+            <h2 class="text-2xl font-bold font-orbitron text-white">Creadores de la pagina</h2>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          
+          <div class="group bg-[#0a0a0a] border border-white/10 rounded-2xl p-4 hover:border-purple-500/30 transition-all duration-300 relative overflow-hidden shadow-lg hover:shadow-purple-900/10">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-purple-600/10 blur-[80px] rounded-full -z-10 group-hover:bg-purple-600/20 transition-all"></div>
+            
+            <div class="flex flex-col sm:flex-row gap-8 items-start">
+                <div class="relative shrink-0">
+                    <div class="w-24 h-24 rounded-2xl overflow-hidden border border-white/10 shadow-2xl grayscale group-hover:grayscale-0 transition-all duration-500">
+                        <img src="https://res.cloudinary.com/dkjaq3i9p/image/upload/v1764350849/image_2025-11-28_122729111_ughfdt.png" alt="Cristian" class="w-full h-full object-cover" />
+                    </div>
+                    <div class="absolute -bottom-3 -right-3 bg-[#111] border border-white/10 p-1.5 rounded-lg shadow-sm">
+                        <span class="text-xs">🚀</span>
+                    </div>
+                </div>
+
+                <div class="flex-1 w-full">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="text-2xl font-bold text-white font-orbitron">Cristian Ginez</h3>
+                            <p class="text-purple-400 text-xs font-bold tracking-widest uppercase mt-1">Lead Full-Stack Engineer</p>
+                        </div>
+                        <div class="flex gap-3">
+                            <a href="https://github.com/CristianGinez" target="_blank" class="text-gray-600 hover:text-white transition-colors"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" /></svg></a>
+                            <a href="https://paypal.me/CristianGinez" target="_blank" class="text-gray-600 hover:text-[#0070BA] transition-colors"><svg class="w-5 h-5" fill="currentColor" viewBox="13 11 22 26">
+                    <path d="M32.3305 18.0977C32.3082 18.24 32.2828 18.3856 32.2542 18.5351C31.2704 23.5861 27.9046 25.331 23.606 25.331H21.4173C20.8916 25.331 20.4486 25.7127 20.3667 26.2313L19.2461 33.3381L18.9288 35.3527C18.8755 35.693 19.1379 36 19.4815 36H23.3634C23.8231 36 24.2136 35.666 24.286 35.2127L24.3241 35.0154L25.055 30.3772L25.1019 30.1227C25.1735 29.6678 25.5648 29.3338 26.0245 29.3338H26.6051C30.3661 29.3338 33.3103 27.8068 34.1708 23.388C34.5303 21.5421 34.3442 20.0008 33.393 18.9168C33.1051 18.59 32.748 18.3188 32.3305 18.0977Z"></path>
+                    <path d="M31.3009 17.6871C31.1506 17.6434 30.9955 17.6036 30.8364 17.5678C30.6766 17.5328 30.5127 17.5018 30.3441 17.4748C29.754 17.3793 29.1074 17.334 28.4147 17.334H22.5676C22.4237 17.334 22.2869 17.3666 22.1644 17.4254C21.8948 17.5551 21.6944 17.8104 21.6459 18.1229L20.402 26.0013L20.3662 26.2311C20.4481 25.7126 20.8911 25.3308 21.4168 25.3308H23.6055C27.9041 25.3308 31.2699 23.5851 32.2537 18.5349C32.2831 18.3854 32.3078 18.2398 32.33 18.0975C32.0811 17.9655 31.8115 17.8525 31.5212 17.7563C31.4496 17.7324 31.3757 17.7094 31.3009 17.6871Z"></path>
+                    <path d="M21.6461 18.1231C21.6946 17.8105 21.895 17.5552 22.1646 17.4264C22.2879 17.3675 22.4239 17.3349 22.5678 17.3349H28.4149C29.1077 17.3349 29.7542 17.3803 30.3444 17.4757C30.513 17.5027 30.6768 17.5338 30.8367 17.5687C30.9957 17.6045 31.1508 17.6443 31.3011 17.688C31.3759 17.7103 31.4498 17.7334 31.5222 17.7564C31.8125 17.8527 32.0821 17.9664 32.331 18.0976C32.6237 16.231 32.3287 14.9601 31.3194 13.8093C30.2068 12.5424 28.1986 12 25.629 12H18.169C17.6441 12 17.1963 12.3817 17.1152 12.9011L14.0079 32.5969C13.9467 32.9866 14.2473 33.3381 14.6402 33.3381H19.2458L20.4022 26.0014L21.6461 18.1231Z"></path>
+                </svg></a>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 space-y-5">
+                        <div>
+                            <h4 class="text-[10px] font-bold text-gray-500 uppercase mb-2 tracking-wider">Responsabilidades</h4>
+                            <p class="text-sm text-gray-300 leading-relaxed font-light">
+                                Diseño de arquitectura escalable, integración de autenticación OAuth, modelado de base de datos PostgreSQL, lógica de seguridad (RLS) y despliegue en Vercel.
+                            </p>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-[10px] font-bold text-gray-500 uppercase mb-2 tracking-wider">Tech Focus</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-2 py-1 text-[10px] font-mono rounded bg-purple-500/10 text-purple-300 border border-purple-500/20">Backend Logic</span>
+                                <span class="px-2 py-1 text-[10px] font-mono rounded bg-green-500/10 text-green-300 border border-green-500/20">Database</span>
+                                <span class="px-2 py-1 text-[10px] font-mono rounded bg-blue-500/10 text-blue-300 border border-blue-500/20">Auth</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+
+          <div class="group bg-[#0a0a0a] border border-white/10 rounded-2xl p-4 hover:border-pink-500/30 transition-all duration-300 relative overflow-hidden shadow-lg hover:shadow-pink-900/10">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-pink-600/10 blur-[80px] rounded-full -z-10 group-hover:bg-pink-600/20 transition-all"></div>
+
+            <div class="flex flex-col sm:flex-row gap-8 items-start">
+                <div class="relative shrink-0">
+                    <div class="w-24 h-24 rounded-2xl overflow-hidden border border-white/10 shadow-2xl grayscale group-hover:grayscale-0 transition-all duration-500">
+                        <img src="https://github.com/Jesus-Rios.png" alt="Jesus Rios" class="w-full h-full object-cover" />
+                    </div>
+                    <div class="absolute -bottom-3 -right-3 bg-[#111] border border-white/10 p-1.5 rounded-lg shadow-sm">
+                        <span class="text-xs">🎨</span>
+                    </div>
+                </div>
+
+                <div class="flex-1 w-full">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="text-2xl font-bold text-white font-orbitron">Jesus Rios</h3>
+                            <p class="text-pink-400 text-xs font-bold tracking-widest uppercase mt-1">Frontend & UI Specialist</p>
+                        </div>
+                        <div class="flex gap-3">
+                            <a href="https://github.com/Jesus-Rios" target="_blank" class="text-gray-600 hover:text-white transition-colors"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" /></svg></a>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 space-y-5">
+                        <div>
+                            <h4 class="text-[10px] font-bold text-gray-500 uppercase mb-2 tracking-wider">Responsabilidades</h4>
+                            <p class="text-sm text-gray-300 leading-relaxed font-light">
+                                Diseño de interfaz responsiva, animaciones CSS avanzadas (Tailwind v4), experiencia de usuario (UX/UI) y optimización visual de assets.
+                            </p>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-[10px] font-bold text-gray-500 uppercase mb-2 tracking-wider">Tech Focus</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-2 py-1 text-[10px] font-mono rounded bg-pink-500/10 text-pink-300 border border-pink-500/20">UI Design</span>
+                                <span class="px-2 py-1 text-[10px] font-mono rounded bg-cyan-500/10 text-cyan-300 border border-cyan-500/20">Tailwind</span>
+                                <span class="px-2 py-1 text-[10px] font-mono rounded bg-yellow-500/10 text-yellow-300 border border-yellow-500/20">Interactivity</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <section class="relative">
+        <div class="flex items-center gap-3 mb-12">
+          <h2 class="text-2xl font-bold font-orbitron text-white">Historial de Versiones</h2>
+        </div>
+
+        <div class="border-l border-white/10 ml-3 md:ml-6 space-y-12">
+          {versions.map((ver) => (
+            <div class="relative pl-8 md:pl-12">
+              <div class="absolute -left-[5px] top-2 w-2.5 h-2.5 rounded-full bg-[#050505] border-2 border-gray-600"></div>
+
+              <div class="flex flex-col sm:flex-row sm:items-baseline gap-4 mb-3">
+                <h3 class="text-2xl font-mono font-bold text-white">{ver.version}</h3>
+                <span class={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-widest border ${ver.statusColor}`}>
+                  {ver.label}
+                </span>
+                <span class="text-sm text-gray-500 font-mono">{ver.date}</span>
+              </div>
+
+              <p class="text-gray-300 mb-6 italic border-l-2 border-white/5 pl-4">{ver.summary}</p>
+
+              <ul class="space-y-2">
+                {ver.changes.map((change) => (
+                  <li class="flex items-start gap-3 text-sm text-gray-400 group">
+                    <span class={`
+                      px-1.5 py-0.5 rounded text-[10px] font-mono uppercase w-16 text-center shrink-0
+                      ${change.type === 'feat' ? 'bg-green-900/30 text-green-400' : ''}
+                      ${change.type === 'fix' ? 'bg-red-900/30 text-red-400' : ''}
+                      ${change.type === 'ui' ? 'bg-purple-900/30 text-purple-400' : ''}
+                      ${change.type === 'perf' ? 'bg-yellow-900/30 text-yellow-400' : ''}
+                      ${change.type === 'chore' || change.type === 'init' || change.type === 'refactor' ? 'bg-gray-800 text-gray-300' : ''}
+                      ${change.type === 'security' ? 'bg-blue-900/30 text-blue-400' : ''}
+                    `}>
+                      {change.type}
+                    </span>
+                    <span class="group-hover:text-white transition-colors">{change.text}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </section>
+
+    </div>
+  </main>
+  <Footer />
+</Layout>
