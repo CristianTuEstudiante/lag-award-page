@@ -13,7 +13,7 @@ const nominees = categories.flatMap((category) =>
         finalImage = `https://img.youtube.com/vi/${nominee.youtubeId}/hqdefault.jpg`;
     }
     
-    // CASO B: Cloudinary
+    // CASO B: ary
     // Si no hay imagen y el video es de Cloudinary, cambiamos extensión a .jpg
     if (!finalImage && nominee.video && nominee.video.includes('cloudinary')) {
         finalImage = nominee.video.replace(/\.[^/.]+$/, ".jpg");

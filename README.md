@@ -1,18 +1,18 @@
-# 🏆 LAGAWARDS — Sitio Oficial
+#  LAGAWARDS — Sitio Oficial
 
 Sitio web oficial de los Premios LAGAWARDS: celebramos clips, creadores y comunidad. Construido con `Astro` y estilizado con `Tailwind CSS`.
 
-## ✨ Características
+##  Características
 - Diseño moderno con efectos `glass` y tipografía `Orbitron`.
 - Páginas: `Información`, `Categorías`, `Nominados`, `Inicio` y `404` personalizada.
 - Navegación responsiva con logo centrado y menú móvil.
 - Sección de categorías interactiva: vista de cuadrícula y detalle con nominados en miniaturas, navegación por flechas.
 
-## 🧰 Stack Tecnológico
+##  Stack Tecnológico
 - Astro `^5.15.3`
 - Tailwind CSS `^4.x` con PostCSS (`@tailwindcss/postcss`, `postcss`, `autoprefixer`)
 
-## 🚀 Inicio Rápido
+##  Inicio Rápido
 
 ```powershell
 npm install
@@ -45,19 +45,19 @@ npm run preview
 └── package.json            # Scripts y dependencias
 ```
 
-## 🎨 Estilos y Tailwind
+##  Estilos y Tailwind
 - Importación en `src/styles/global.css`:
 	- `@import "tailwindcss";` (Tailwind v4)
 - Tailwind escanea: `./src/**/*.{astro,html,js,ts,jsx,tsx}`.
 - Si usas `@apply` dentro de `<style>` en componentes, añade `lang="postcss"` o mueve utilidades al HTML.
 
-## 🔧 Troubleshooting
+##  Troubleshooting
 - Error “Cannot apply unknown utility class”: usa utilidades en HTML o `lang="postcss"`.
 - Error “Unterminated string literal”: revisa `<script>` en `.astro` y evita cadenas mal cerradas.
 - Si las clases no aplican, verifica que `global.css` se importa en `Layout.astro` y que PostCSS usa `@tailwindcss/postcss`.
 
-## 📦 Deploy
+##  Deploy
 - Compatible con Vercel/Netlify. Ejecuta build (`npm run build`) y sirve `/dist`.
 
-## 🤝 Contribuir
+##  Contribuir
 - PRs bienvenidas. Usa la rama `main`. Mantén el estilo consistente y evita cambios no relacionados.
