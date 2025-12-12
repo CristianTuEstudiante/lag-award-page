@@ -2,6 +2,44 @@
 import { supabase } from './supabase';
 import { $currentUser } from '../stores/authStore';
 
+
+
+interface Achievement {
+    badge_name: string;
+    awarded_at: string;
+    // La unión (join) nos devuelve los datos del evento anidados
+    event_id: {
+        name: string;
+        year: number;
+    } | null; 
+}
+
+/**
+ * Obtiene todos los logros/insignias de un usuario específico.
+ * Se une (JOIN) a la tabla 'events' para obtener el nombre y año del evento.
+ * @param userId - El ID del usuario.
+ */
+export async function getUserAchievements(userId: string): Promise<Achievement[]> {
+    const { data, error } = await supabase
+        .from('user_achievements')
+        .select(`
+            badge_name,
+            awarded_at,
+            event_id (
+                name,
+                year
+            )
+        `)
+        .eq('user_id', userId);
+
+    if (error) {
+        console.error('Error al obtener logros del usuario:', error);
+        return [];
+    }
+
+    return (data as Achievement[]) || [];
+}
+
 // Función para VOTAR (Ya la tenías, sin cambios)
 export async function voteForNominee(categoryId: string, nomineeName: string) {
   const user = $currentUser.get();
@@ -86,3 +124,4 @@ export async function getCategoryTotalVotes() {
 
   return countsMap;
 }
+
