@@ -118,10 +118,7 @@ const links = [
 <script>
   import { supabase } from '../lib/supabase';
   import { $currentUser } from '../stores/authStore';
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/main
   // Ejecutar lógica cada vez que Astro carga o cambia de página
   document.addEventListener('astro:page-load', () => {
       
@@ -134,10 +131,7 @@ const links = [
       const menuToggle = document.getElementById('menu-toggle');
       const mobileMenu = document.getElementById('mobile-menu');
 
-<<<<<<< HEAD
-  
-=======
->>>>>>> origin/main
+
       // 2. FUNCIÓN DE ACTUALIZACIÓN DE UI
       const updateUI = (user) => {
           if (!btnLoginLink || !userProfile || !userAvatar) return; // Protección si el DOM no está listo
@@ -145,30 +139,20 @@ const links = [
           if (user) {
               // --- MODO: LOGUEADO ---
               btnLoginLink.classList.add('hidden');
-<<<<<<< HEAD
-           
-=======
-              
->>>>>>> origin/main
+
               // Forzamos que se muestre el perfil
               userProfile.classList.remove('hidden');
               userProfile.classList.add('flex'); 
 
               // LÓGICA ROBUSTA DE IMAGEN
-<<<<<<< HEAD
-              const avatarUrl = user.user_metadata?.avatar_url || 
-              user.user_metadata?.picture;
-=======
+
               const avatarUrl = user.user_metadata?.avatar_url || user.user_metadata?.picture;
->>>>>>> origin/main
+
               const userName = user.user_metadata?.full_name || user.email || 'User';
               
               // Si no hay foto, usamos UI Avatars con las iniciales del usuario
               const fallbackUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(userName)}&background=random&color=fff&bold=true`;
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/main
               userAvatar.src = avatarUrl || fallbackUrl;
               
               // Si la imagen de Google falla al cargar, cambiamos al fallback inmediatamente
@@ -178,7 +162,7 @@ const links = [
 
               if (mobileLoginBtn) {
                   mobileLoginBtn.textContent = 'Mi Cuenta';
-<<<<<<< HEAD
+
                   // MODIFICADO: Redirige a la nueva página de perfil
                   mobileLoginBtn.href = '/perfil';
               }
@@ -190,20 +174,11 @@ const links = [
                       window.location.href = '/perfil';
                   });
                   userAvatar.setAttribute('data-listener-attached', 'true');
-              }
+          }
 
-=======
-                  mobileLoginBtn.href = '/admin'; // Opcional: redirigir a un perfil si quieres
-              }
->>>>>>> origin/main
-
-          } else {
+      } else { 
               // --- MODO: NO LOGUEADO ---
               btnLoginLink.classList.remove('hidden');
-<<<<<<< HEAD
-=======
-              
->>>>>>> origin/main
               userProfile.classList.add('hidden');
               userProfile.classList.remove('flex');
 
@@ -224,10 +199,6 @@ const links = [
               if (session?.user) {
                   $currentUser.set(session.user);
                   updateUI(session.user);
-<<<<<<< HEAD
-           
-=======
->>>>>>> origin/main
               } else {
                   updateUI(null);
               }
