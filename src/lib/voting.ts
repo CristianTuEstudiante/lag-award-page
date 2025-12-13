@@ -124,4 +124,15 @@ export async function getCategoryTotalVotes() {
 
   return countsMap;
 }
+export async function getWinners(eventId: string) {
+    const { data, error } = await supabase
+        .rpc('get_event_winners', { target_event_id: eventId });
 
+    if (error) {
+        console.error("Error calculando ganadores:", error);
+        return [];
+    }
+    
+    // Retorna un array: [{ category_id: "1", nominee_name: "Grox", vote_count: 50 }, ...]
+    return data;
+}

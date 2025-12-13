@@ -1096,68 +1096,12 @@ const getOptimizedUrl = (url: string) => {
             newVoteBtn.disabled = true;
           }
         } else {
-          newVoteBtn.innerHTML = `<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z"></path></svg> Votar Ahora`;
+          // --- LÓGICA MODIFICADA: VOTACIÓN CERRADA ---
+          newVoteBtn.innerHTML = `🔒 Votaciones Cerradas`;
           newVoteBtn.className =
-            "w-full md:w-auto px-8 py-4 bg-linear-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 rounded-lg text-xl font-bold text-white shadow-lg transition-all transform hover:scale-105 flex items-center justify-center gap-3";
-          newVoteBtn.disabled = false;
-
-          newVoteBtn.addEventListener("click", async () => {
-            try {
-              newVoteBtn.innerHTML = `<span class="animate-spin">⏳</span> Procesando...`;
-              newVoteBtn.disabled = true;
-              newVoteBtn.classList.add("cursor-not-allowed", "opacity-70");
-
-              const success = await voteForNominee(
-                currentCategory.id,
-                nominee.name
-              );
-              if (success) {
-                userVotes[currentCategory.id] = nominee.name;
-
-                currentTotal++;
-                categoryCounts[catKey] = currentTotal;
-                if (voteCountNumber)
-                  voteCountNumber.textContent = currentTotal.toString();
-                newVoteBtn.innerHTML = `✅ Tu Voto: ${nominee.name}`;
-                newVoteBtn.className =
-                  "w-full md:w-auto px-8 py-4 bg-green-600 hover:bg-green-500 rounded-lg text-xl font-bold text-white shadow-lg transition-all flex items-center justify-center gap-3";
-                newVoteBtn.classList.remove("cursor-not-allowed", "opacity-70");
-                const successAudio = new Audio("/audio/success.mp3");
-                successAudio.volume = 0.5;
-                successAudio
-                  .play()
-                  .catch((e) => console.log("Audio bloqueado", e));
-                confetti({
-                  particleCount: 100,
-                  spread: 70,
-                  origin: { y: 0.6, x: 0.1 },
-                  colors: ["#ef4444", "#eab308", "#a855f7"],
-                });
-                confetti({
-                  particleCount: 100,
-                  spread: 70,
-                  origin: { y: 0.6, x: 0.9 },
-                  colors: ["#ef4444", "#eab308", "#a855f7"],
-                });
-              } else {
-                newVoteBtn.innerHTML = `⚠️ No se pudo votar`;
-                setTimeout(() => {
-                  newVoteBtn.innerHTML = `<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z"></path></svg> Votar Ahora`;
-                  newVoteBtn.className =
-                    "w-full md:w-auto px-8 py-4 bg-linear-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 rounded-lg text-xl font-bold text-white shadow-lg transition-all transform hover:scale-105 flex items-center justify-center gap-3";
-
-                  newVoteBtn.disabled = false;
-                  newVoteBtn.classList.remove(
-                    "cursor-not-allowed",
-                    "opacity-70"
-                  );
-                }, 2500);
-              }
-            } catch (e) {
-              newVoteBtn.innerHTML = `❌ Error`;
-              newVoteBtn.disabled = false;
-            }
-          });
+            "w-full md:w-auto px-8 py-4 bg-gray-800 text-gray-500 rounded-lg text-lg font-bold cursor-not-allowed border border-gray-700 opacity-75";
+          newVoteBtn.disabled = true;
+          // No añadimos el event listener de click
         }
       }
 
